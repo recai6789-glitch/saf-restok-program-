@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Çek / Senet Takip Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f6 { background: #f59e0b; color: white; } /* Durum Değiştir */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #a855f7; } /* Çek/Senet için Mor ton */
+    .type-select select { padding: 8px; border-radius: 4px; border: 2px solid #a855f7; font-size: 14px; font-weight: 700; color: #a855f7; background: #faf5ff; }
+    /* İŞLEM DETAY GRİDİ */
+    .detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; flex-grow: 1; }
+    /* SOL ALAN: ANA BİLGİLER */
+    .main-info { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding: 15px; border: 1px solid #d8b4fe; border-radius: 8px; background: #fbfaff; }
+    .main-info .form-group-full { grid-column: span 3; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #c084fc; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* Cari Seçim (F4) */
+    .cari-input-group { position: relative; }
+    .cari-input-group input { padding-right: 30px; }
+    .cari-input-group .btn-cari-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    /* SAĞ ALAN: TUTAR VE DURUM */
+    .right-side-panel { display: flex; flex-direction: column; gap: 20px; }
+    /* TUTAR VE VADE */
+    .amount-section { 
+        padding: 20px;
+        border: 2px solid #a855f7;
+        border-radius: 10px;
+        background: #f3e8ff;
+    }
+    .amount-section h3 { color: #7e22ce; margin-bottom: 15px; font-size: 16px; border-bottom: 1px dashed #c084fc; padding-bottom: 5px; }
+    .amount-section input {
+        font-size: 28px;
+        font-weight: 900;
+        text-align: center;
+        color: #7e22ce;
+        border: 3px solid #c084fc;
+        border-radius: 8px;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    /* DURUM VE İŞLEM GEÇMİŞİ */
+    .status-section { 
+        padding: 15px;
+        border: 1px solid #a855f7;
+        border-radius: 8px;
+        background: #faf5ff;
+        flex-grow: 1;
+    }
+    .current-status { 
+        font-size: 16px; 
+        font-weight: 800; 
+        color: #10b981; 
+        padding: 10px; 
+        background: #ecfdf5; 
+        border: 1px solid #10b981; 
+        border-radius: 6px; 
+        text-align: center; 
+        margin-bottom: 10px;
+    }
+    .status-history { 
+        list-style: none; 
+        font-size: 11px; 
+        height: 150px; 
+        overflow-y: auto; 
+        padding-left: 0;
+    }
+    .status-history li { 
+        padding: 3px 0; 
+        border-bottom: 1px dotted #e2e8f0; 
+        color: #475569;
+    }
+    .status-history span { font-weight: 600; color: #334155; }
+    /* ÖZET */
+    .summary {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px;
+        border-top: 2px solid #a855f7;
+        background: #f3e8ff;
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: auto;
+    }
+    .summary div strong { color: #7e22ce; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni Kayıt</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f6" data-key="F6">F6: Durum Değiştir / Ciro</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">ÇEK / SENET TAKİP EKRANI - ALINAN ÇEK</div>
+        <div class="type-select">
+            <select id="document-type">
+                <option value="alınan-çek" selected>Alınan Çek (Portföy)</option>
+                <option value="verilen-çek">Verilen Kendi Çekimiz</option>
+                <option value="alınan-senet">Alınan Senet</option>
+                <option value="verilen-senet">Verilen Kendi Senetimiz</option>
+            </select>
+        </div>
+    </div>
+    <div class="detail-grid">
+        <div class="left-side">
+            <div class="main-info">
+                <div class="form-group">
+                    <label>Çek/Senet No</label>
+                    <input type="text" value="387945">
+                </div>
+                <div class="form-group">
+                    <label>Belge Tarihi (Alış/Veriş)</label>
+                    <input type="date" value="2025-11-20">
+                </div>
+                <div class="form-group">
+                    <label>Vade Tarihi</label>
+                    <input type="date" value="2026-02-15">
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Borçlu/Alacaklı Cari Kodu (F4)</label>
+                    <div class="cari-input-group">
+                        <input type="text" value="CR-0010" placeholder="CR Kodu">
+                        <button class="btn-cari-search">F4</button>
+                    </div>
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Cari Adı (Mükellef Adı)</label>
+                    <input type="text" value="Yılmaz Ticaret ve Otomotiv A.Ş." readonly>
+                </div>
+                <div class="form-group">
+                    <label>Banka Adı (Keşideci Banka)</label>
+                    <input type="text" value="Garanti Bankası">
+                </div>
+                <div class="form-group">
+                    <label>Şube Kodu / Adı</label>
+                    <input type="text" value="1245 / Merkez">
+                </div>
+                <div class="form-group">
+                    <label>Mütabakat Kodu</label>
+                    <input type="text" placeholder="Varsa Referans No">
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Açıklama</label>
+                    <textarea style="width: 100%; height: 60px; padding: 5px; border: 1px solid #c084fc;" placeholder="Bu çekin alınma nedeni/borçluya verilme nedeni"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="right-side-panel">
+            <div class="amount-section">
+                <h3>ÇEK/SENET TUTARI VE VADE</h3>
+                <input type="text" value="12.500,00 TL">
+                <div class="form-group">
+                    <label>Vadeye Kalan Gün</label>
+                    <input type="text" value="87 Gün" readonly style="font-size: 16px; font-weight: 700; color: #a855f7;">
+                </div>
+            </div>
+            <div class="status-section">
+                <h3>GEÇERLİ DURUM VE GEÇMİŞ</h3>
+                <div class="current-status" id="current-status">PORTFÖYDE (TAHSİL EDİLMEDİ)</div>
+                <ul class="status-history">
+                    <li>20.11.2025 10:00: <span>Portföye Giriş</span> (CR-0010'dan Alındı)</li>
+                    <li>20.11.2025 10:00: Kayıt Oluşturuldu</li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <div class="summary">
+        <div><strong>Portföydeki Çek Toplamı:</strong> 85.000,00 TL</div>
+        <div><strong>Portföydeki Senet Toplamı:</strong> 45.000,00 TL</div>
+        <div>**TOPLAM RİSK:** **130.000,00 TL**</div>
+    </div>
+  </div>
+  <script>
+    function updateDocumentType(type) {
+        const titleElement = document.getElementById('entry-title');
+        const statusElement = document.getElementById('current-status');
+        const isCek = type.includes('çek');
+        const isAlinan = type.includes('alınan');
+        let titleText = type.toUpperCase().replace('-', ' / ');
+        let statusText = isAlinan ? 'PORTFÖYDE (TAHSİL EDİLMEDİ)' : 'VERİLDİ (ÖDEME BEKLİYOR)';
+        let statusColor = isAlinan ? '#10b981' : '#f59e0b';
+        titleElement.textContent = `ÇEK / SENET TAKİP EKRANI - ${titleText}`;
+        statusElement.textContent = statusText;
+        statusElement.style.backgroundColor = isAlinan ? '#ecfdf5' : '#fffbeb';
+        statusElement.style.color = statusColor;
+        // Alınan çeklerde borçlu cari, Verilen çeklerde alacaklı cari (bizim muhatabımız)
+        const cariLabel = document.querySelector('.main-info .form-group-full label');
+        cariLabel.textContent = isAlinan ? 'Borçlu Cari Kodu (F4)' : 'Alacaklı Cari Kodu (F4)';
+    }
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") {

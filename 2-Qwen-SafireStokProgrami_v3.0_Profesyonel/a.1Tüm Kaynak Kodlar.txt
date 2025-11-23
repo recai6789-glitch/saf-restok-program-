@@ -1,0 +1,2497 @@
+# SAFIRE STOK PROGRAMI v3.0 - TÜM KAYNAK KODLARI (TEK DOSYA)
+# Hazırlayan: Yardımcı AI
+# Kullanıcı: Recai
+# Tarih: 22 Kasım 2025
+# Amaç: Tüm HTML, CSS, JS, Python ve SQL kodları tek bir dosyada
+# Format: Açık metin, düzenli bölümler, tam çalışır durumda
+
+# =================================================================
+# 1. GİRİŞ EKRANI (giris.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Giriş</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      width: 400px;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logo {
+      font-size: 48px;
+      color: #4f46e5;
+    }
+    .logo::before {
+      content: "💎";
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #4f46e5;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #374151;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="logo"></div>
+    <div class="title">SAFIRE STOK PROGRAMI</div>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="kullaniciAdi" placeholder="Ahmet">
+    </div>
+    <div class="form-group">
+      <label>Şifre</label>
+      <input type="password" id="sifre" placeholder="••••••••">
+    </div>
+    <button class="btn-login" onclick="girisYap()">Giriş Yap</button>
+    <div class="footer">
+      Safire Bilgisayar • © 2025 | v3.0 Final
+    </div>
+  </div>
+  <script>
+    function girisYap() {
+      const kullanici = document.getElementById('kullaniciAdi').value.trim();
+      const sifre = document.getElementById('sifre').value.trim();
+      if (!kullanici || !sifre) {
+        alert("Kullanıcı adı ve şifre gereklidir.");
+        return;
+      }
+      // Gerçek uygulamada: Flask backend'e POST isteği atılır
+      localStorage.setItem('currentUser', kullanici);
+      window.location.href = 'ana_ekran.html';
+    }
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 2. ANA EKRAN (ana_ekran.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Ana Ekran</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #e0e7ff;
+      padding: 24px;
+    }
+    .container {
+      width: 21cm;
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .logo {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo::before {
+      content: "💎";
+      font-size: 28px;
+    }
+    .status-icons {
+      display: flex;
+      gap: 12px;
+    }
+    .icon {
+      width: 50px;
+      height: 50px;
+      background: #dbeafe;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #1d4ed8;
+    }
+    /* 4 BÜYÜK MODÜL */
+    .modules {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .module {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      border-radius: 12px;
+      padding: 20px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .module:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .module-icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+    .module-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .module-desc {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    /* Büyük Modül Renkleri */
+    .btn-stok     { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+    .btn-cari     { background: linear-gradient(135deg, #059669, #047857); }
+    .btn-fatura   { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+    .btn-irsaliye { background: linear-gradient(135deg, #d97706, #ea580c); }
+    /* KÜÇÜK MODÜL STİLİ - 4 Sütunlu Grid */
+    .small-modules {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); 
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .small-module {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      padding: 16px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .small-module:hover {
+      transform: scale(1.03);
+    }
+    .small-module .title {
+      font-size: 14px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .small-module .desc {
+      font-size: 11px;
+      opacity: 0.9;
+      color: white;
+    }
+    /* Küçük Buton Renkleri */
+    .btn-rapor            { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+    .btn-kasa             { background: linear-gradient(135deg, #0891b2, #0e7490); }
+    .btn-ceksenet         { background: linear-gradient(135deg, #65a30d, #4d7c0f); }
+    .btn-envanter         { background: linear-gradient(135deg, #be123c, #9f1239); }
+    .btn-ebelge           { background: linear-gradient(135deg, #9d174d, #831843); }
+    .btn-devir            { background: linear-gradient(135deg, #4338ca, #3730a3); }
+    .btn-sistem-ayarlari  { background: linear-gradient(135deg, #475569, #334155); }
+    .btn-kullanici-ayarlari { background: linear-gradient(135deg, #71717a, #52525b); }
+    /* Alt Bilgi */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">SAFIRE STOK</div>
+      <div class="status-icons">
+        <div class="icon">📶</div>
+        <div class="icon">💻</div>
+        <div class="icon">📱</div>
+      </div>
+    </div>
+    <div class="modules">
+      <div class="module btn-stok" onclick="window.location.href='stok_karti.html'">
+        <div class="module-icon">📦</div>
+        <div class="module-title">Stok Kartı</div>
+        <div class="module-desc">Ürün yönetimi (R3)</div>
+      </div>
+      <div class="module btn-cari" onclick="window.location.href='cari_kartı.html'">
+        <div class="module-icon">👤</div>
+        <div class="module-title">Cari Kart</div>
+        <div class="module-desc">Alıcı / Tedarikçi (R4)</div>
+      </div>
+      <div class="module btn-fatura" onclick="window.location.href='fatura_satis.html'">
+        <div class="module-icon">🧾</div>
+        <div class="module-title">Fatura</div>
+        <div class="module-desc">Satış / Alış (R5)</div>
+      </div>
+      <div class="module btn-irsaliye" onclick="window.location.href='irsaliye_satis.html'">
+        <div class="module-icon">🚚</div>
+        <div class="module-title">İrsaliye</div>
+        <div class="module-desc">Sevk / Giriş (R6)</div>
+      </div>
+    </div>
+    <div class="small-modules">
+      <div class="small-module btn-rapor" onclick="window.location.href='raporlamaci.html'">
+        <div class="title">Raporlama</div>
+        <div class="desc">Tüm Raporlar (R10)</div>
+      </div>
+      <div class="small-module btn-kasa" onclick="window.location.href='kasa_banka_giris.html'">
+        <div class="title">Kasa & Banka</div>
+        <div class="desc">Tahsilat / Ödeme (R12)</div>
+      </div>
+      <div class="small-module btn-ceksenet" onclick="window.location.href='cek_senet_giris.html'">
+        <div class="title">Çek-Senet</div>
+        <div class="desc">Vade ve Risk Takibi (R13)</div>
+      </div>
+      <div class="small-module btn-envanter" onclick="window.location.href='ambar_islem_giris.html'">
+        <div class="title">Ambar Yönetimi</div>
+        <div class="desc">Transfer / Sayım (R14)</div>
+      </div>
+      <div class="small-module btn-ebelge" onclick="window.location.href='e_belge_yonetimi.html'">
+        <div class="title">E-Belge Takip</div>
+        <div class="desc">E-Fatura / E-Arşiv (R15)</div>
+      </div>
+      <div class="small-module btn-devir" onclick="window.location.href='devir_islemleri.html'">
+        <div class="title">Devir İşlemleri</div>
+        <div class="desc">Yeni yıla geçiş</div>
+      </div>
+      <div class="small-module btn-sistem-ayarlari" onclick="window.location.href='sistem_ayarlari.html'">
+        <div class="title">Sistem Ayarları</div>
+        <div class="desc">Yetkilendirme / Şirket Bilgileri</div>
+      </div>
+      <div class="small-module btn-kullanici-ayarlari" onclick="window.location.href='kullanici_ayarlari.html'">
+        <div class="title">Kullanıcı Ayarları</div>
+        <div class="desc">Profil / Şifre / Tema Tercihleri</div>
+      </div>
+    </div>
+    <div class="footer">
+      Safire Bilgisayar • © 2025 | v3.0 Final
+    </div>
+  </div>
+</body>
+</html>
+
+# =================================================================
+# 3. STOK KARTI (stok_karti.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Stok Kartı</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #f0f7ff;
+      padding: 16px;
+    }
+    .container {
+      width: 20.5cm;
+      min-height: 29.7cm;
+      background: white;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    /* ÜST BÖLÜM */
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    /* TUŞLAR – KÜÇÜKTEN BÜYÜĞE */
+    .f-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      position: relative;
+    }
+    .btn-f2 { background: #2563eb; color: white; }
+    .btn-f3 { background: #8b5cf6; color: white; }
+    .btn-f4 { background: #059669; color: white; }
+    .btn-f5 { background: #dc2626; color: white; }
+    .btn-f6 { background: #f59e0b; color: white; }
+    .btn-f9 { background: #be123c; color: white; }
+    .btn-f10 { background: #8b5cf6; color: white; }
+    .btn-excel { background: #10b981; color: white; }
+    .btn::after {
+      content: attr(data-key);
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #1e293b;
+      color: white;
+      font-size: 9px;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .btn::before {
+      content: attr(data-aciklama);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+    /* ARAMA KUTUSU – 2 SATIR AŞAĞI */
+    .search-group {
+      display: flex;
+      gap: 6px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
+    .search-input {
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 300px;
+      background: white;
+    }
+    .btn-search {
+      padding: 8px 14px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    /* BAŞLIK */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1e3a8a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .title::before {
+      content: "📦";
+      font-size: 30px;
+    }
+    /* STOK FORMU */
+    .stock-form {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      height: 90px;
+      justify-content: center;
+    }
+    .form-group label {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 3px solid rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select {
+      padding: 7px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #fafcff;
+    }
+    /* Renkli Etiketler */
+    .label-kod       { background: linear-gradient(to bottom, #2563eb, #1d4ed8); }
+    .label-stokno    { background: linear-gradient(to bottom, #0891b2, #0e7490); }
+    .label-tedarikci { background: linear-gradient(to bottom, #7c3aed, #6d28d9); }
+    .label-degisen   { background: linear-gradient(to bottom, #ca8a04, #a16207); }
+    .label-ozelno    { background: linear-gradient(to bottom, #374151, #1e293b); }
+    .label-ad        { background: linear-gradient(to bottom, #be123c, #9f1239); }
+    .label-grup      { background: linear-gradient(to bottom, #166534, #14532d); }
+    .label-olcu      { background: linear-gradient(to bottom, #1f2937, #111827); }
+    .label-model     { background: linear-gradient(to bottom, #7c2d12, #9a3412); }
+    .label-rafa      { background: linear-gradient(to bottom, #059669, #047857); }
+    .label-rafb      { background: linear-gradient(to bottom, #d97706, #b45309); }
+    .label-adet      { background: linear-gradient(to bottom, #0369a1, #0284c7); }
+    .label-alisfiyat { background: linear-gradient(to bottom, #057a55, #046f4d); }
+    .label-satisfiyat { background: linear-gradient(to bottom, #dc2626, #b91c1c); }
+    .label-webgrup   { background: linear-gradient(to bottom, #4338ca, #3730a3); }
+    /* Alt Bilgi */
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    .record-copy {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 10px;
+      color: #6b7280;
+      font-style: italic;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- F TUŞLARI – KÜÇÜKTEN BÜYÜĞE -->
+    <div class="top-section">
+      <div class="f-buttons">
+        <button class="btn btn-f2" data-key="F2" data-aciklama="Yeni stok kartı açar">F2: Yeni</button>
+        <button class="btn btn-f3" data-key="F3" data-aciklama="Belgeyi yazdırır / PDF oluşturur">F3: Yazdır</button>
+        <button class="btn btn-f4" data-key="F4" data-aciklama="Seçili belgeyi düzenler">F4: Düzenle</button>
+        <button class="btn btn-f5" data-key="F5" data-aciklama="Onaysız belgeyi siler">F5: Sil</button>
+        <button class="btn btn-f6" data-key="F6" data-aciklama="Barkod okutarak ürün ekler">F6: Barkod</button>
+        <button class="btn btn-f9" data-key="F9" data-aciklama="Tahsilat / Ödeme ekler">F9: Tahsilat</button>
+        <button class="btn btn-f10" data-key="F10" data-aciklama="Raporlamaya geçer">F10: Raporla</button>
+        <button class="btn btn-excel" data-key="Excel" data-aciklama="Excel'den veri alır">Excel'den Veri Al</button>
+      </div>
+    </div>
+    <!-- ARAMA KUTUSU – 2 SATIR AŞAĞIDA -->
+    <div class="search-group">
+      <input type="text" class="search-input" placeholder="🔍 Ürün Ara: Kod / Ad / No">
+      <button class="btn-search">Ara</button>
+    </div>
+    <!-- Başlık -->
+    <div class="header">
+      <div class="title">Stok Kartı Detayı</div>
+    </div>
+    <!-- Stok Formu -->
+    <div class="stock-form">
+      <div class="form-group">
+        <label class="label-kod">Özel Kod</label>
+        <input type="text" value="sly12435" readonly>
+      </div>
+      <div class="form-group">
+        <label class="label-stokno">Stok No</label>
+        <input type="text" value="FB-2025-A">
+      </div>
+      <div class="form-group">
+        <label class="label-tedarikci">Tedarikçi No</label>
+        <input type="text" value="TDR-8842">
+      </div>
+      <div class="form-group">
+        <label class="label-degisen">Değişen No</label>
+        <input type="text" value="">
+      </div>
+      <div class="form-group">
+        <label class="label-ozelno">Özel No</label>
+        <input type="text" value="">
+      </div>
+      <div class="form-group">
+        <label class="label-ad">Parça Adı</label>
+        <input type="text" value="Fren Balatası Seti" style="font-weight:700;">
+      </div>
+      <div class="form-group">
+        <label class="label-grup">Ürün Grup</label>
+        <input type="text" value="Fren Sistemi">
+      </div>
+      <div class="form-group">
+        <label class="label-olcu">Ölçü</label>
+        <input type="text" value="Adet">
+      </div>
+      <div class="form-group">
+        <label class="label-model">Model</label>
+        <input type="text" value="2020+">
+      </div>
+      <div class="form-group">
+        <label class="label-rafa">Raf-A</label>
+        <input type="text" value="A-05">
+      </div>
+      <div class="form-group">
+        <label class="label-rafb">Raf-B</label>
+        <input type="text" value="">
+      </div>
+      <div class="form-group">
+        <label class="label-adet">Adet</label>
+        <input type="text" value="118">
+      </div>
+      <div class="form-group">
+        <label class="label-alisfiyat">Alış Fiyatı</label>
+        <input type="text" value="85,00 TL">
+      </div>
+      <div class="form-group">
+        <label class="label-satisfiyat">Satış Fiatı</label>
+        <input type="text" value="1.200,00 TL">
+      </div>
+      <div class="form-group">
+        <label class="label-webgrup">Web Grup</label>
+        <input type="text" value="Otomotiv">
+      </div>
+    </div>
+    <!-- Alt Bilgi -->
+    <div class="footer">
+      Safire Bilgisayar • Safire Stok Programı v3.0 – İyi Çalışmalar! 💙
+    </div>
+    <!-- Kayıt Adı -->
+    <div class="record-copy">
+      Kayıt Adı: STK-2025-000123 | Oluşturulma: 10.11.2025 | Ahmet (PC)
+    </div>
+  </div>
+  <script>
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("Yeni stok kartı"); }
+      if (event.key === "F3") { event.preventDefault(); window.print(); }
+      if (event.key === "F4") { event.preventDefault(); alert("Düzenleniyor"); }
+      if (event.key === "F5") { event.preventDefault(); confirm("Silinsin mi?"); }
+      if (event.key === "F6") { event.preventDefault(); alert("Barkod okutuldu"); }
+      if (event.key === "F9") { event.preventDefault(); alert("Tahsilat eklendi"); }
+      if (event.key === "F10") { event.preventDefault(); window.location.href = 'rapor_stok_hareket.html'; }
+    });
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 4. CARİ KART (cari_karti.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Cari Kart</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #f0f7ff;
+      padding: 16px;
+    }
+    .container {
+      width: 20.5cm;
+      min-height: 29.7cm;
+      background: white;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    /* TUŞLAR – SADECE EKRANDA */
+    .no-print,
+    .no-print * {
+      display: none !important;
+    }
+    @media print {
+      .no-print,
+      .no-print * {
+        display: none !important;
+      }
+      .container {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+    }
+    /* ÜSTTE F TUŞLARI */
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .f-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      position: relative;
+    }
+    .btn-f2 { background: #2563eb; color: white; }
+    .btn-f3 { background: #8b5cf6; color: white; }
+    .btn-f4 { background: #059669; color: white; }
+    .btn-f5 { background: #dc2626; color: white; }
+    .btn-f6 { background: #f59e0b; color: white; }
+    .btn-f9 { background: #be123c; color: white; }
+    .btn-f10 { background: #8b5cf6; color: white; }
+    .btn-excel { background: #10b981; color: white; }
+    .btn::after {
+      content: attr(data-key);
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #1e293b;
+      color: white;
+      font-size: 9px;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .btn::before {
+      content: attr(data-aciklama);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+    /* ARAMA KUTUSU – 2 SATIR AŞAĞIDA */
+    .search-group {
+      display: flex;
+      gap: 6px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
+    .search-input {
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 300px;
+      background: white;
+    }
+    .btn-search {
+      padding: 8px 14px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    /* BAŞLIK */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #059669;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .title::before {
+      content: "👤";
+      font-size: 30px;
+    }
+    /* CARİ FORMU */
+    .cari-form {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      height: 90px;
+      justify-content: center;
+    }
+    .form-group label {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 3px solid rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select {
+      padding: 7px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #fafcff;
+    }
+    /* Renkli Etiketler */
+    .label-kod       { background: linear-gradient(to bottom, #2563eb, #1d4ed8); } /* Cari Kodu */
+    .label-unvan     { background: linear-gradient(to bottom, #059669, #047857); } /* Unvan */
+    .label-vdaire    { background: linear-gradient(to bottom, #dc2626, #b91c1c); } /* Vergi Dairesi */
+    .label-vno       { background: linear-gradient(to bottom, #ca8a04, #a16207); } /* Vergi No */
+    .label-adres     { background: linear-gradient(to bottom, #374151, #1e293b); } /* Adres */
+    .label-il        { background: linear-gradient(to bottom, #1f2937, #111827); } /* İl / İlçe */
+    .label-tel1      { background: linear-gradient(to bottom, #0369a1, #0284c7); } /* Telefon 1 */
+    .label-tel2      { background: linear-gradient(to bottom, #0891b2, #0e7490); } /* Telefon 2 */
+    .label-eposta    { background: linear-gradient(to bottom, #057a55, #046f4d); } /* E-posta */
+    .label-yetkili   { background: linear-gradient(to bottom, #7c2d12, #9a3412); } /* Yetkili */
+    .label-tur       { background: linear-gradient(to bottom, #4338ca, #3730a3); } /* Cari Türü */
+    .label-bakiye    { background: linear-gradient(to bottom, #be123c, #9f1239); } /* Bakiye */
+    /* Alt Bilgi */
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    .record-copy {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 10px;
+      color: #6b7280;
+      font-style: italic;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- F TUŞLARI – KÜÇÜKTEN BÜYÜĞE -->
+    <div class="top-section">
+      <div class="f-buttons">
+        <button class="btn btn-f2" data-key="F2" data-aciklama="Yeni cari kartı oluşturur">F2: Yeni</button>
+        <button class="btn btn-f3" data-key="F3" data-aciklama="Cari kartını yazdırır">F3: Yazdır</button>
+        <button class="btn btn-f4" data-key="F4" data-aciklama="Seçili cari kartını düzenler">F4: Düzenle</button>
+        <button class="btn btn-f5" data-key="F5" data-aciklama="Onaysız cari kartını siler">F5: Sil</button>
+        <button class="btn btn-f6" data-key="F6" data-aciklama="Cari seçimi yapar">F6: Cari Seç</button>
+        <button class="btn btn-f9" data-key="F9" data-aciklama="Tahsilat/ödeme ekler">F9: Tahsilat</button>
+        <button class="btn btn-f10" data-key="F10" data-aciklama="Raporlamaya geçer">F10: Raporla</button>
+        <button class="btn btn-excel" data-key="Excel" data-aciklama="Excel'den veri alır">Excel'den Veri Al</button>
+      </div>
+    </div>
+    <!-- ARAMA KUTUSU – 2 SATIR AŞAĞIDA -->
+    <div class="search-group">
+      <input type="text" class="search-input" placeholder="🔍 Cari Ara: Kod / Unvan">
+      <button class="btn-search">Ara</button>
+    </div>
+    <!-- Başlık -->
+    <div class="header">
+      <div class="title">Cari Kart Detayı</div>
+    </div>
+    <!-- Cari Bilgileri -->
+    <div class="cari-form">
+      <div class="form-group">
+        <label class="label-kod">Cari Kodu</label>
+        <input type="text" value="CR-2025-0015" readonly>
+      </div>
+      <div class="form-group">
+        <label class="label-unvan">Unvan</label>
+        <input type="text" value="Anadolu Otomotiv">
+      </div>
+      <div class="form-group">
+        <label class="label-vdaire">Vergi Dairesi</label>
+        <input type="text" value="Bayrampaşa">
+      </div>
+      <div class="form-group">
+        <label class="label-vno">Vergi No / TC</label>
+        <input type="text" value="9876543210">
+      </div>
+      <div class="form-group">
+        <label class="label-adres">Adres</label>
+        <input type="text" value="E-5 Yan Yol, No:12">
+      </div>
+      <div class="form-group">
+        <label class="label-il">İl / İlçe</label>
+        <input type="text" value="İstanbul / Bağcılar">
+      </div>
+      <div class="form-group">
+        <label class="label-tel1">Telefon 1</label>
+        <input type="text" value="0212 123 45 67">
+      </div>
+      <div class="form-group">
+        <label class="label-tel2">Telefon 2</label>
+        <input type="text" value="0532 987 65 43">
+      </div>
+      <div class="form-group">
+        <label class="label-eposta">E-posta</label>
+        <input type="text" value="info@anadoluoto.com">
+      </div>
+      <div class="form-group">
+        <label class="label-yetkili">Yetkili Kişi</label>
+        <input type="text" value="Mehmet Yılmaz">
+      </div>
+      <div class="form-group">
+        <label class="label-tur">Cari Türü</label>
+        <select>
+          <option>Alıcı</option>
+          <option>Satıcı</option>
+          <option>Alıcı ve Satıcı</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label-bakiye">Bakiye (TL)</label>
+        <input type="text" value="41.500,00" readonly>
+      </div>
+    </div>
+    <!-- Hareket Tablosu ve Toplam SİLİNDİ -->
+    <!-- Alt Bilgi -->
+    <div class="footer">
+      Safire Bilgisayar • Safire Stok Programı v3.0 – İyi Çalışmalar! 💙
+    </div>
+    <!-- Kayıt Adı -->
+    <div class="record-copy">
+      Kayıt Adı: CR-2025-000123 | Oluşturulma: 10.11.2025 | Ahmet (PC)
+    </div>
+  </div>
+  <script>
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("Yeni cari kartı"); }
+      if (event.key === "F3") { event.preventDefault(); window.print(); }
+      if (event.key === "F4") { event.preventDefault(); alert("Düzenleniyor"); }
+      if (event.key === "F5") { event.preventDefault(); confirm("Silinsin mi?"); }
+      if (event.key === "F6") { event.preventDefault(); alert("Cari seçildi"); }
+      if (event.key === "F9") { event.preventDefault(); alert("Tahsilat eklendi"); }
+      if (event.key === "F10") { event.preventDefault(); window.location.href = 'rapor_cari_hareket.html'; }
+    });
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 5. SATIŞ FATURASI (fatura_satis.html)
+# =================================================================
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safire Stok Programı - Satış Faturası</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #fef2f2;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    .btn-f2 { background: #2563eb; color: white; }
+    .btn-f3 { background: #8b5cf6; color: white; }
+    .btn-f4 { background: #059669; color: white; }
+    .btn-f5 { background: #dc2626; color: white; }
+    .btn-f6 { background: #f59e0b; color: white; }
+    .btn-f7 { background: #10b981; color: white; }
+    .btn-f9 { background: #be123c; color: white; }
+    .btn-f10 { background: #8b5cf6; color: white; }
+    .btn::after {
+      content: attr(data-key);
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #1e293b;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #dc2626;
+    }
+    .invoice-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .right-corner-labels {
+      text-align: right;
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 1.8;
+    }
+    .right-corner-labels div {
+      font-weight: 600;
+    }
+    .customer-info {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border-left: 4px solid #dc2626;
+    }
+    .customer-info strong {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th,
+    .table td {
+      border: 1px solid #cbd5e1;
+      padding: 12px 8px;
+      font-size: 13px;
+      text-align: left;
+    }
+    .table th {
+      background: #f1f5f9;
+      font-weight: bold;
+      color: #1e293b;
+    }
+    .table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .summary {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 14px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .summary div {
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      max-width: 300px;
+      margin-left: auto;
+    }
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    .record-copy {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 10px;
+      color: #6b7280;
+      font-style: italic;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 8px;
+    }
+    .back-button {
+      padding: 8px 16px;
+      background: #6b7280;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .fatura-bilgileri {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .fatura-bilgi-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .fatura-bilgi-group label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #374151;
+    }
+    .fatura-bilgi-group input {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="ana_ekran.html" class="back-button">← Ana Ekrana Dön</a>
+    <div class="top-buttons">
+      <button class="btn btn-f2" data-key="F2" onclick="yeniFatura()">F2: Yeni</button>
+      <button class="btn btn-f3" data-key="F3" onclick="yazdir()">F3: Yazdır</button>
+      <button class="btn btn-f4" data-key="F4" onclick="cariSec()">F4: Cari Seç</button>
+      <button class="btn btn-f5" data-key="F5" onclick="sil()">F5: Sil</button>
+      <button class="btn btn-f6" data-key="F6" onclick="barkodOku()">F6: Barkod</button>
+      <button class="btn btn-f7" data-key="F7" onclick="excelVeriAl()">F7: Excel'den Veri Al</button>
+      <button class="btn btn-f9" data-key="F9" onclick="tahsilatEkle()">F9: Tahsilat</button>
+      <button class="btn btn-f10" data-key="F10" onclick="raporla()">F10: Raporla</button>
+    </div>
+    <div class="header">
+      <div class="invoice-title">🧾 SATIŞ FATURASI</div>
+      <div class="right-corner-labels">
+        <div>Fatura Tarihi: <input type="text" value="10.11.2025" style="border:none; background:none; width:100px;"></div>
+        <div>Fatura No: <input type="text" value="FTR-SAT-2025-001" style="border:none; background:none; width:120px;"></div>
+        <div>Sevk Tarihi: <input type="text" value="10.11.2025" style="border:none; background:none; width:100px;"></div>
+      </div>
+    </div>
+    <div class="fatura-bilgileri">
+      <div class="fatura-bilgi-group">
+        <label>Cari Kodu</label>
+        <input type="text" value="CR-2025-0015">
+      </div>
+      <div class="fatura-bilgi-group">
+        <label>İrsaliye No</label>
+        <input type="text" value="IRS-SAT-2025-001">
+      </div>
+    </div>
+    <div class="customer-info">
+      <strong>ALICI: ANADOLU OTOMOTİV</strong><br>
+      Adres: E-5 Yan Yol, No:12<br>
+      Bağcılar / İSTANBUL<br>
+      Vergi Dairesi: Bayrampaşa │ Vergi No: 9876543210<br>
+      Tel: 0212 123 45 67
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width:14%;">Özel Kod</th>
+          <th style="width:14%;">Stok No</th>
+          <th style="width:30%;">Parça Adı</th>
+          <th style="width:8%;">Adet</th>
+          <th style="width:8%;">Birim</th>
+          <th style="width:11%;">Birim Fiyat</th>
+          <th style="width:10%;">İskonto (%)</th>
+          <th style="width:15%;">Tutar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sly12435</td>
+          <td>FB-2025-A</td>
+          <td>Fren Balatası Seti</td>
+          <td>2</td>
+          <td>Adet</td>
+          <td>1.200,00</td>
+          <td>5</td>
+          <td>2.280,00</td>
+        </tr>
+        <tr>
+          <td>rot789</td>
+          <td>RB-2025-B</td>
+          <td>Rot Başlığı</td>
+          <td>1</td>
+          <td>Adet</td>
+          <td>900,00</td>
+          <td>–</td>
+          <td>900,00</td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right; font-weight: bold;">Ara Toplam:</td>
+          <td>3.180,00</td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right; font-weight: bold;">KDV (%20):</td>
+          <td>636,00</td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right; font-weight: bold; font-size: 16px;">GENEL TOPLAM:</td>
+          <td style="font-weight: bold; font-size: 16px;">3.816,00</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer">
+      Safire Bilgisayar • Safire Stok Programı – İyi Çalışmalar! 💙
+    </div>
+    <div class="record-copy">
+      Kayıt Adı: FAT-SAT-2025-000123 | Oluşturulma: 10.11.2025 18:45 | <span id="currentUserFatura">Ahmet</span> (PC)
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUser = localStorage.getItem('currentUser') || 'Ahmet';
+      document.getElementById('currentUserFatura').textContent = currentUser;
+    });
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); yeniFatura(); }
+      if (event.key === "F3") { event.preventDefault(); yazdir(); }
+      if (event.key === "F4") { event.preventDefault(); cariSec(); }
+      if (event.key === "F5") { event.preventDefault(); sil(); }
+      if (event.key === "F6") { event.preventDefault(); barkodOku(); }
+      if (event.key === "F7") { event.preventDefault(); excelVeriAl(); }
+      if (event.key === "F9") { event.preventDefault(); tahsilatEkle(); }
+      if (event.key === "F10") { event.preventDefault(); raporla(); }
+    });
+    function yeniFatura() {
+      if (confirm('Yeni fatura oluşturulsun mu?')) {
+        alert('Yeni fatura oluşturuldu. Bilgileri girebilirsiniz.');
+      }
+    }
+    function yazdir() {
+      window.print();
+    }
+    function cariSec() {
+      const cariKodu = prompt('Cari kodunu girin:');
+      if (cariKodu) {
+        alert(`Cari seçildi: ${cariKodu}
+Cari bilgileri yükleniyor...`);
+      }
+    }
+    function sil() {
+      if (confirm('Bu faturayı silmek istediğinizden emin misiniz?')) {
+        alert('Fatura silindi.');
+        window.location.href = 'ana_ekran.html';
+      }
+    }
+    function barkodOku() {
+      const barkod = prompt('Barkod numarasını girin veya okutun:');
+      if (barkod) {
+        alert(`Barkod okundu: ${barkod}
+Ürün bilgileri getiriliyor...`);
+      }
+    }
+    function excelVeriAl() {
+      alert('Excel\'den fatura veri alma işlemi başlatılıyor...');
+    }
+    function tahsilatEkle() {
+      alert('Tahsilat ekleme sayfasına yönlendiriliyor...');
+      window.location.href = 'tahsilat.html';
+    }
+    function raporla() {
+      alert('Fatura raporlama sayfasına yönlendiriliyor...');
+      window.location.href = 'rapor_fatura.html';
+    }
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 6. ALIŞ İRSALİYESİ (irsaliye_alis.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Alış İrsaliyesi (Çoklu Çıktı)</title>
+  <style>
+    /* 1. GENEL TASARIM VE A4 DÜZENİ */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f0f7ff; padding: 16px; transition: all 0.2s; } 
+    .container {
+      width: 20.5cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 20px 30px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+    /* TUŞLAR ve SEÇENEK KUTUSU STİLLERİ */
+    .no-print { display: block; margin-bottom: 15px; }
+    .f-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; position: relative;}
+    .btn { padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; border: none; }
+    #printOptionsBox {
+        position: absolute; top: 40px; left: 0; background: #fff; border: 1px solid #ccc;
+        padding: 10px; border-radius: 5px; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        display: none; flex-direction: column; gap: 5px;
+    }
+    #printOptionsBox .btn { width: 100%; background: #1e3a8a; color: white; }
+    /* BAŞLIK DÜZENİ */
+    .irsaliye-header { display: flex; justify-content: space-between; margin-bottom: 10px; border: 1px solid #000; padding: 10px; }
+    .header-left-group { width: 45%; font-size: 13px; line-height: 1.5; }
+    .satici-bilgileri { margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px dashed #ccc;}
+    .cari-info strong { width: 100px; display: inline-block; color: #6b7280; }
+    .header-center { width: 30%; min-height: 120px; text-align: center; padding-top: 20px; font-weight: 700; color: #1e3a8a;}
+    .header-right { width: 25%; font-size: 13px; border: 1px solid #000; }
+    .fatura-detay input { border: none; padding: 0; width: 60%; text-align: right; background: none; font-size: 12px; }
+    /* TABLO ve INPUT STİLLERİ */
+    .irsaliye-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; table-layout: fixed; }
+    .irsaliye-table th, .irsaliye-table td { border: 1px solid #000; padding: 5px 3px; text-align: left; overflow: hidden; white-space: nowrap; }
+    .irsaliye-table th { background-color: #f3f4f6; font-weight: 700; color: #374151; text-align: center; }
+    .irsaliye-table input { border: none; width: 100%; padding: 0; margin: 0; background: none; font-size: 12px; text-align: inherit; }
+    .irsaliye-table input.text-right { text-align: right; }
+    .irsaliye-table th:nth-child(1) { width: 12%; } /* Özel Kod */
+    .irsaliye-table th:nth-child(2) { width: 12%; } /* Stok No */
+    .irsaliye-table th:nth-child(3) { width: 35%; } /* Parça Adı */
+    .irsaliye-table th:nth-child(4) { width: 10%; } /* Adet */
+    .irsaliye-table th:nth-child(5) { width: 7%; }  /* Birim */
+    .irsaliye-table th:nth-child(6) { width: 12%; } /* Birim Fiyat */
+    .irsaliye-table th:nth-child(7) { width: 12%; } /* Tutar */
+    .irsaliye-table th:nth-child(8) { width: 7%; }  /* İşlem */
+    .totals-area { display: flex; justify-content: flex-end; margin-top: 5px; }
+    .totals-box { width: 45%; border: 1px solid #000; border-collapse: collapse; }
+    .totals-box div { display: flex; justify-content: space-between; padding: 6px; border-bottom: 1px solid #000; }
+    /* YAZDIRMA (PRINT) KURALLARI */
+    @media print {
+        .no-print { display: none !important; }
+        .row-actions { display: none; }
+        .container { padding: 0; margin: 0; box-shadow: none; border-radius: 0; width: 21cm; min-height: 29.7cm; }
+        @page { size: A4; margin: 1cm; }
+        .print-a5 .container { width: 14.8cm; min-height: 21.0cm; font-size: 10px; padding: 10px; }
+        @page { size: A5; margin: 0.5cm; } 
+        .print-continuous .container { width: 18cm; min-height: auto; font-size: 11px; border: none; box-shadow: none; padding: 10px; }
+        .print-continuous .irsaliye-table th, .print-continuous .irsaliye-table td { border: 1px dashed #000; padding: 4px 3px; }
+        @page { size: auto; margin: 0.5cm; } 
+    }
+  </style>
+</head>
+<body class="print-a4">
+  <div class="container">
+    <div class="no-print">
+      <div class="f-buttons">
+        <button class="btn" style="background:#059669; color:white;" onclick="kaydet()">F3: Kaydet</button>
+        <button class="btn" style="background:#be123c; color:white;" onclick="showPrintOptions()">F7: Yazdır (Seçenekler)</button>
+        <button class="btn" style="background:#8b5cf6; color:white;" onclick="faturayaDonustur()">F10: Faturaya Dönüştür</button>
+        <button class="btn" style="background:#f59e0b; color:white;" onclick="addRow()">F6: Satır Ekle</button>
+        <div id="printOptionsBox">
+            <strong style="color:#1e3a8a;">Yazdırma Formatı Seçin:</strong>
+            <button class="btn" style="background:#059669;" onclick="setPrintFormat('a4')">A4 İrsaliye</button>
+            <button class="btn" style="background:#059669;" onclick="setPrintFormat('a5')">A5 İrsaliye</button>
+            <button class="btn" style="background:#059669;" onclick="setPrintFormat('continuous')">Sürekli Form</button>
+            <button class="btn" style="background:#059669;" onclick="setPrintFormat('pdf')">PDF Olarak Kaydet (A4)</button>
+        </div>
+      </div>
+      <h2 style="color:#2563eb;">📝 ALIŞ İRSALİYESİ - GİRİŞ EKRANI (FİNAL)</h2>
+      <hr style="margin-top: 10px;">
+    </div>
+    <div class="irsaliye-header">
+        <div class="header-left-group">
+            <div class="satici-bilgileri">
+                <h1 style="font-size: 14px; color: #1e3a8a;">TESLİM EDEN (Tedarikçi)</h1>
+                <p style="font-size: 12px;">TEDARİKÇİ OTOMOTİV A.Ş.<br>Adres: Yeni Mah. No: 55, İzmir<br>V. Dairesi: Konak / V. No: 5554443332</p>
+            </div>
+            <div class="cari-info">
+                <h2 style="font-size: 14px; margin-bottom: 5px; color: #374151;">TESLİM ALAN (Kendi Firmamız)</h2>
+                <div><strong>Unvan:</strong> Safire Bilgisayar San. Tic. Ltd. Şti.</div>
+                <div><strong>Adres:</strong> Örnek Mah. No: 123, İstanbul</div>
+                <div><strong>Vergi Dairesi:</strong> Boğaziçi</div>
+                <div><strong>Vergi No:</strong> 1234567890</div>
+            </div>
+        </div>
+        <div class="header-center">
+             <div style="font-size: 16px;">[MATBU BASKILI ALAN]</div>
+             <div style="font-size: 12px; color:#374151;">**Gelen Sevk Belgesi**</div>
+             <div style="font-size: 16px; font-weight: 700; margin-top: 15px; color: #2563eb;">ALIŞ İRSALİYESİ</div>
+        </div>
+        <div class="header-right">
+            <div class="fatura-detay">
+                <div style="border-bottom: 1px solid #000; padding-bottom: 5px;"><strong>SEVK EDEN SERİ/SIRA NO:</strong> <input type="text" value="B-000000456"></div>
+                <div><strong>Giriş Tarihi:</strong> <input type="date" value="2025-11-19"></div>
+                <div><strong>Sevk Tarihi:</strong> <input type="date" value="2025-11-19"></div>
+                <div><strong>Sevk Saati:</strong> <input type="time" value="11:45"></div>
+            </div>
+        </div>
+    </div>
+    <table class="irsaliye-table">
+      <thead>
+        <tr>
+          <th>Özel Kod</th><th>Stok No</th><th>Parça Adı</th><th>Adet</th><th>Birim</th><th>Birim Fiyat</th><th>Tutar</th><th class="row-actions no-print">İşlem</th>
+        </tr>
+      </thead>
+      <tbody id="irsaliyeSatirlari"></tbody>
+    </table>
+    <div style="height: 60px;"></div>
+    <div style="display: flex; justify-content: space-between;">
+        <div style="width: 50%;">
+             <div style="font-size: 12px; border: 1px solid #000; padding: 10px; min-height: 80px;">
+                **Not:** Alış İrsaliyesi Faturaya Dönüşene kadar **Stok Girişi** ve **Cari Borç Hareketi** gerçekleşmez.
+            </div>
+            <div style="border: 1px solid #000; margin-top: 10px; padding: 10px; width: 50%; text-align: center; font-size: 12px;">
+                TESLİM ALAN (İmza/Kaşe)
+            </div>
+        </div>
+        <div class="totals-area" style="width: 45%;">
+            <div class="totals-box" style="width: 100%;">
+                <div><label>Net Tutar (KDV Hariç):</label><span class="value" id="araToplam">0,00 TL</span></div>
+                <div><label>KDV (%20):</label><span class="value" id="kdvTutar">0,00 TL</span></div>
+                <div style="background: #e0e7ff;"><label>GENEL TOPLAM:</label><span class="value" id="genelToplam">0,00 TL</span></div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <script>
+    const MAX_ROWS = 22;
+    let currentRowId = 0;
+    // Stok Veritabanı Alış/Satış modüllerinde aynıdır
+    const STOK_VERITABANI = [
+        { ozelKod: 'SLY12435', stokNo: 'FB-2025-A', urunAdi: 'Fren Balatası Seti', birim: 'ADET', fiyat: 1200.00 },
+        { ozelKod: 'ROT789', stokNo: 'RB-2025-B', urunAdi: 'Rot Başlığı', birim: 'ADET', fiyat: 250.00 },
+        { ozelKod: 'YAN01', stokNo: 'YAG-5W30', urunAdi: 'Motor Yağı 5W-30 (4L)', birim: 'LT', fiyat: 850.00 },
+        { ozelKod: 'FILT', stokNo: 'HF-2024-C', urunAdi: 'Hava Filtresi', birim: 'ADET', fiyat: 150.00 }
+    ];
+    function addRow(ozelKod = '', stokNo = '', urunAdi = '', miktar = 1, birim = 'ADET', fiyat = 0) {
+        if (currentRowId >= MAX_ROWS && !document.body.classList.contains('print-continuous')) return;
+        currentRowId++;
+        const tableBody = document.getElementById('irsaliyeSatirlari');
+        const newRow = tableBody.insertRow();
+        newRow.id = `row_${currentRowId}`;
+        newRow.className = 'data-row';
+        newRow.innerHTML = `
+            <td><input type="text" value="${ozelKod}" placeholder="Özel Kod" data-ozelkod onchange="calculateRow(${currentRowId})"></td>
+            <td ondblclick="stokSec(${currentRowId})" title="Stok Seçmek için çift tıklayın"><input type="text" value="${stokNo}" placeholder="Stok No" data-stokno onchange="calculateRow(${currentRowId})"></td>
+            <td ondblclick="stokSec(${currentRowId})" title="Stok Seçmek için çift tıklayın"><input type="text" value="${urunAdi}" placeholder="Parça Adı" data-urunadi onchange="calculateRow(${currentRowId})"></td>
+            <td><input type="number" value="${miktar}" class="text-right" data-miktar onchange="calculateRow(${currentRowId})"></td>
+            <td class="text-center" data-birim>${birim}</td>
+            <td><input type="number" value="${fiyat.toFixed(2)}" class="text-right" data-fiyat onchange="calculateRow(${currentRowId})"></td>
+            <td class="text-right" data-tutar="0.00">0,00</td> 
+            <td class="row-actions no-print"><button style="background:#dc2626; color:white; border:none; padding:4px 6px;" onclick="deleteRow(${currentRowId})">Sil</button></td>
+        `;
+        fillEmptyRows(); 
+        calculateRow(currentRowId); 
+    }
+    function stokSec(rowId) {
+        const row = document.getElementById(`row_${rowId}`);
+        if (!row) return;
+        let stokListesi = STOK_VERITABANI.map(s => `${s.stokNo}: ${s.urunAdi} (${s.fiyat.toFixed(2)} TL)`).join('\n');
+        let secim = prompt(`Lütfen stok numarasını girin veya birini kopyalayıp yapıştırın:
+-- MEVCUT STOKLAR --
+${stokListesi}`);
+        if (secim) {
+            const secilenStok = STOK_VERITABANI.find(s => s.stokNo.toLowerCase() === secim.trim().toLowerCase());
+            if (secilenStok) {
+                row.querySelector('[data-ozelkod]').value = secilenStok.ozelKod;
+                row.querySelector('[data-stokno]').value = secilenStok.stokNo;
+                row.querySelector('[data-urunadi]').value = secilenStok.urunAdi;
+                row.querySelector('[data-birim]').textContent = secilenStok.birim;
+                // NOT: Alış İrsaliyesinde fiyatı, Stok Kartındaki *Alış Fiyatı* yerine, genellikle fatura kesenin kestiği fiyata göre manuel gireriz. Örnekte varsayılan fiyatı kullanıyoruz.
+                row.querySelector('[data-fiyat]').value = secilenStok.fiyat.toFixed(2);
+                calculateRow(rowId);
+            } else { alert("Stok bulunamadı. Lütfen Stok No'yu kontrol edin."); }
+        }
+    }
+    function calculateRow(id) { 
+        const row = document.getElementById(`row_${id}`);
+        if (!row) return;
+        let miktar = parseFloat(row.querySelector('[data-miktar]').value) || 0;
+        let fiyat = parseFloat(row.querySelector('[data-fiyat]').value) || 0;
+        const netTutar = miktar * fiyat;
+        row.querySelector('[data-tutar]').textContent = netTutar.toFixed(2).replace('.', ',');
+        row.querySelector('[data-tutar]').setAttribute('data-tutar', netTutar.toFixed(2));
+        updateGrandTotal(); 
+    }
+    function updateGrandTotal() { 
+        let netToplam = 0; 
+        document.querySelectorAll('#irsaliyeSatirlari [data-tutar]').forEach(cell => { netToplam += parseFloat(cell.getAttribute('data-tutar')) || 0; });
+        const kdvTutar = netToplam * 0.20;
+        const genelToplam = netToplam + kdvTutar;
+        document.getElementById('araToplam').textContent = netToplam.toFixed(2).replace('.', ',') + ' TL';
+        document.getElementById('kdvTutar').textContent = kdvTutar.toFixed(2).replace('.', ',') + ' TL';
+        document.getElementById('genelToplam').textContent = genelToplam.toFixed(2).replace('.', ',') + ' TL';
+    }
+    function deleteRow(id) { document.getElementById(`row_${id}`).remove(); fillEmptyRows(); updateGrandTotal(); }
+    function fillEmptyRows() {
+        const tableBody = document.getElementById('irsaliyeSatirlari');
+        const currentDataRows = tableBody.querySelectorAll('.data-row').length;
+        const requiredEmptyRows = MAX_ROWS - currentDataRows;
+        tableBody.querySelectorAll('.empty-row').forEach(row => row.remove());
+        if (!document.body.classList.contains('print-continuous')) {
+             for (let i = 0; i < requiredEmptyRows; i++) {
+                const emptyRow = tableBody.insertRow();
+                emptyRow.className = 'empty-row';
+                emptyRow.innerHTML = `<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="row-actions no-print"></td>`;
+            }
+        }
+    }
+    function showPrintOptions() { document.getElementById('printOptionsBox').style.display = document.getElementById('printOptionsBox').style.display === 'flex' ? 'none' : 'flex'; }
+    function setPrintFormat(format) {
+        document.body.classList.remove('print-a4', 'print-a5', 'print-continuous', 'print-pdf');
+        document.body.classList.add(`print-${format === 'pdf' ? 'a4' : format}`);
+        document.getElementById('printOptionsBox').style.display = 'none';
+        window.print(); 
+    }
+    function kaydet() { alert("Alış İrsaliyesi Kaydedildi. (Stok/Cari Etkilenmedi)"); }
+    function faturayaDonustur() {
+         alert("İrsaliye faturaya dönüştürülüyor. STOK GİRİŞİ ve CARİ BORÇ HAREKETİ GERÇEKLEŞTİ.");
+         window.location.href = '/fatura_alis_kes'; 
+    }
+    window.onload = function() {
+        addRow('STK100', 'PARCA-001', 'Amortisör Ön Seti', 5, 'ADET', 850.00);
+        addRow('STK200', 'PARCA-002', 'Yağ Filtresi', 50, 'ADET', 50.00);
+        fillEmptyRows();
+    }
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "F3") { event.preventDefault(); kaydet(); }
+        if (event.key === "F6") { event.preventDefault(); addRow(); } 
+        if (event.key === "F7") { event.preventDefault(); showPrintOptions(); }
+        if (event.key === "F10") { event.preventDefault(); faturayaDonustur(); }
+    });
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 7. FATURA / İRSALİYE GİRİŞ EKRANI (fatura_irsaliye_giris.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Fatura / İrsaliye Giriş Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f6 { background: #f59e0b; color: white; } /* Yazdır */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #059669; } /* Varsayılan: Satış için yeşil ton */
+    .type-select { display: flex; gap: 10px; align-items: center; }
+    .type-select label { font-size: 12px; font-weight: 600; color: #475569; }
+    .type-select select { padding: 5px; border-radius: 4px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 700; color: #059669; }
+    /* Alış ve Giriş İşlemleri için Stil (JS ile güncellenecek) */
+    .alis-style { 
+        color: #2563eb !important; 
+        border-color: #2563eb !important; 
+        background: #eff6ff !important;
+    }
+    /* CARİ BİLGİ VE TARİHLER */
+    .cari-header { display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; padding: 10px; border: 1px solid #c7d2fe; border-radius: 8px; background: #f5f8ff; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 7px; border: 1px solid #94a3b8; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* Özel Cari Kodu Alanı (F4 ile Cari seçimi) */
+    .cari-input-group { position: relative; }
+    .cari-input-group input { padding-right: 30px; }
+    .cari-input-group .btn-cari-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    /* STOK HAREKET TABLOSU */
+    .table-container { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+    .table-responsive { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .table-responsive th, .table-responsive td { border: 1px solid #e2e8f0; padding: 6px; text-align: left; }
+    .table-responsive th { background: #059669; color: white; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+    /* İŞLEM SATIRLARI */
+    .data-input { width: 100%; border: none; padding: 5px; font-size: 12px; text-align: right; background: transparent; }
+    .stok-input { text-align: left; font-weight: 600; }
+    .stok-td { position: relative; }
+    .stok-td .btn-stok-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 5px; background: #3b82f6; color: white; border: none; border-radius: 0; font-size: 10px; cursor: pointer; }
+    /* SONUÇ VE TOPLAM */
+    .bottom-summary { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-top: auto; }
+    .payment-info { padding: 10px; border: 1px solid #a7f3d0; border-radius: 8px; background: #f0fff4; }
+    .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .total-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #d1d5db; }
+    .total-item label { font-weight: 500; font-size: 13px; color: #475569; }
+    .total-item span { font-weight: 700; font-size: 14px; color: #047857; }
+    .grand-total { background: #047857; color: white; padding: 10px; border-radius: 6px; font-size: 18px !important; font-weight: 900 !important; }
+    /* Alış İşlemi Toplam Renkleri (JS ile değiştirilecek) */
+    .alis-total { background: #2563eb !important; }
+    .alis-total span { color: white !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni Kayıt</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f6" data-key="F6">F6: Yazdır</button>
+        <button class="btn btn-f4" data-key="F4 (Cari)">F4: Cari Kart</button>
+        <button class="btn btn-f4" data-key="F4 (Stok)">F4: Stok Kart</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">FATURA - SATIŞ GİRİŞ EKRANI</div>
+        <div class="type-select">
+            <label for="transaction-type">İşlem Türü:</label>
+            <select id="transaction-type">
+                <option value="fatura-satis" selected>Fatura - Satış</option>
+                <option value="fatura-alis">Fatura - Alış</option>
+                <option value="irsaliye-satis">İrsaliye - Satış</option>
+                <option value="irsaliye-alis">İrsaliye - Alış</option>
+            </select>
+        </div>
+    </div>
+    <div class="cari-header">
+        <div class="form-group">
+            <label>Cari Kod (F4)</label>
+            <div class="cari-input-group">
+                <input type="text" value="CR-0010" placeholder="CR Kodu">
+                <button class="btn-cari-search">F4</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Cari Adı</label>
+            <input type="text" value="Yılmaz Ticaret ve Otomotiv A.Ş." readonly>
+        </div>
+        <div class="form-group">
+            <label>Belge Tarihi</label>
+            <input type="date" value="2025-11-20">
+        </div>
+        <div class="form-group">
+            <label>Vade Tarihi</label>
+            <input type="date" value="2025-12-20">
+        </div>
+        <div class="form-group">
+            <label>Seri / Sıra No</label>
+            <input type="text" value="FS-00124" placeholder="Seri No">
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table-responsive">
+            <thead>
+                <tr id="table-header-row">
+                    <th style="width: 5%;">Sıra</th>
+                    <th style="width: 15%;">Stok Kodu (F4)</th>
+                    <th style="width: 25%;">Stok Adı</th>
+                    <th style="width: 8%;">Miktar</th>
+                    <th style="width: 7%;">Birim</th>
+                    <th style="width: 10%;">Birim Fiyat</th>
+                    <th style="width: 7%;">İskonto (%)</th>
+                    <th style="width: 8%;">KDV (%)</th>
+                    <th style="width: 15%;">Tutar (TL)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="stok-td">
+                        <input type="text" class="data-input stok-input" value="FB-2025-A">
+                        <button class="btn-stok-search">F4</button>
+                    </td>
+                    <td><input type="text" class="data-input" value="Fren Balatası Seti"></td>
+                    <td><input type="text" class="data-input" value="10" style="text-align: right;"></td>
+                    <td>Adet</td>
+                    <td><input type="text" class="data-input" value="1.200,00" style="text-align: right;"></td>
+                    <td><input type="text" class="data-input" value="5" style="text-align: right;"></td>
+                    <td>20</td>
+                    <td><input type="text" class="data-input" value="11.400,00" readonly></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="stok-td">
+                        <input type="text" class="data-input stok-input" placeholder="Stok Kodu...">
+                        <button class="btn-stok-search">F4</button>
+                    </td>
+                    <td><input type="text" class="data-input" placeholder="Stok Adı otomatik gelecek"></td>
+                    <td><input type="text" class="data-input" placeholder="0"></td>
+                    <td></td>
+                    <td><input type="text" class="data-input" placeholder="0,00"></td>
+                    <td><input type="text" class="data-input" value="0"></td>
+                    <td>20</td>
+                    <td><input type="text" class="data-input" value="0,00" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="bottom-summary">
+        <div class="payment-info">
+            <label>Ödeme Şekli ve Açıklamalar</label>
+            <select style="width: 100%; padding: 7px; margin-bottom: 10px; border-color: #3b82f6;">
+                <option>Açık Hesap (Vade 30 Gün)</option>
+                <option>Nakit</option>
+                <option>Kredi Kartı</option>
+            </select>
+            <textarea style="width: 100%; height: 60px; padding: 5px; border: 1px solid #cbd5e1;" placeholder="Fatura Notları / Açıklamalar"></textarea>
+        </div>
+        <div class="totals">
+            <div class="total-item">
+                <label>Ara Toplam (KDV Hariç)</label>
+                <span>13.650,00 TL</span>
+            </div>
+            <div class="total-item">
+                <label>Toplam İskonto</label>
+                <span>-600,00 TL</span>
+            </div>
+            <div class="total-item">
+                <label>Toplam KDV (%20)</label>
+                <span>2.610,00 TL</span>
+            </div>
+            <div class="total-item grand-total" id="grand-total-item">
+                <label>GENEL TOPLAM</label>
+                <span>15.660,00 TL</span>
+            </div>
+        </div>
+    </div>
+  </div>
+  <script>
+    function updateScreenStyle(type) {
+        const titleElement = document.getElementById('entry-title');
+        const selectElement = document.getElementById('transaction-type');
+        const tableHeader = document.getElementById('table-header-row');
+        const grandTotal = document.getElementById('grand-total-item');
+        const isAlis = type.includes('alis');
+        // Başlık ve Stil Güncelleme
+        titleElement.textContent = selectElement.options[selectElement.selectedIndex].text.toUpperCase() + ' GİRİŞ EKRANI';
+        if (isAlis) {
+            // ALIM/GİRİŞ (Mavi Ton)
+            titleElement.style.color = '#2563eb';
+            selectElement.classList.add('alis-style');
+            tableHeader.style.backgroundColor = '#2563eb';
+            grandTotal.classList.remove('grand-total');
+            grandTotal.classList.add('alis-total');
+        } else {
+            // SATIŞ/ÇIKIŞ (Yeşil Ton)
+            titleElement.style.color = '#059669';
+            selectElement.classList.remove('alis-style');
+            tableHeader.style.backgroundColor = '#059669';
+            grandTotal.classList.remove('alis-total');
+            grandTotal.classList.add('grand-total');
+        }
+    }
+    // Kısayollar
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("F2: Yeni Fatura/İrsaliye kaydı başlatılıyor."); }
+      if (event.key === "F4") { event.preventDefault(); alert("F4: Cari veya Stok Kartı Arama Ekranı açılıyor."); }
+      if (event.key === "F5") { event.preventDefault(); alert("F5: Fatura/İrsaliye kaydı veritabanına işleniyor (Kaydet)."); }
+      if (event.key === "F6") { event.preventDefault(); alert("F6: Belge Yazdırma Önizlemesine gönderiliyor."); window.print(); }
+      if (event.key === "F10") { event.preventDefault(); alert("F10: Ekran kapatılıyor."); }
+    });
+    // İşlem Türü değişikliğini dinle
+    document.getElementById('transaction-type').addEventListener('change', function() {
+        updateScreenStyle(this.value);
+    });
+    // Sayfa yüklendiğinde varsayılan stili uygula
+    updateScreenStyle(document.getElementById('transaction-type').value);
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 8. AMBAR İŞLEM GİRİŞ (ambar_islem_giris.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Ambar İşlem Giriş Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #f97316; } /* Ambar için Turuncu ton */
+    .type-select select { padding: 5px; border-radius: 4px; border: 2px solid #f97316; font-size: 14px; font-weight: 700; color: #f97316; background: #fff7ed; }
+    /* İŞLEM BİLGİLERİ GRİDİ */
+    .process-info { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; padding: 10px; border: 1px solid #fed7aa; border-radius: 8px; background: #fff7ed; }
+    /* TRANSFERE ÖZEL STİL */
+    #transfer-info { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 15px; 
+        grid-column: span 2; 
+        border-left: 1px solid #fdba74; 
+        padding-left: 15px;
+    }
+    /* SAYIMA ÖZEL STİL */
+    #sayim-info { 
+        display: none; /* Varsayılan olarak gizli */
+        grid-column: span 2; 
+        border-left: 1px solid #fdba74; 
+        padding-left: 15px;
+    }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 7px; border: 1px solid #f97316; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* STOK HAREKET TABLOSU */
+    .table-container { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+    .table-responsive { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .table-responsive th, .table-responsive td { border: 1px solid #e2e8f0; padding: 6px; text-align: left; }
+    .table-responsive th { background: #f97316; color: white; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+    /* İŞLEM SATIRLARI */
+    .data-input { width: 100%; border: none; padding: 5px; font-size: 12px; text-align: right; background: transparent; }
+    .stok-input { text-align: left; font-weight: 600; }
+    .stok-td { position: relative; }
+    .stok-td .btn-stok-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 5px; background: #3b82f6; color: white; border: none; border-radius: 0; font-size: 10px; cursor: pointer; }
+    /* SAYIMDA GÖSTERİLECEK FARKLAR */
+    .fark-td { background-color: #fef2f2; font-weight: 700; color: #b91c1c; text-align: right !important; }
+    /* ALT BÖLÜM - ÖZET */
+    .bottom-summary { 
+        padding: 10px; 
+        border-top: 2px solid #f97316; 
+        display: flex; 
+        justify-content: space-between; 
+        font-weight: 700; 
+        font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni İşlem</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">AMBAR TRANSFER GİRİŞ EKRANI</div>
+        <div class="type-select">
+            <select id="operation-type">
+                <option value="transfer" selected>Ambar Transferi</option>
+                <option value="sayim">Sayım Giriş / Düzeltme</option>
+            </select>
+        </div>
+    </div>
+    <div class="process-info">
+        <div class="form-group">
+            <label>İşlem Tarihi</label>
+            <input type="date" value="2025-11-20">
+        </div>
+        <div class="form-group">
+            <label>Belge No</label>
+            <input type="text" value="TR-00105" placeholder="Referans veya Belge No">
+        </div>
+        <div class="form-group">
+            <label>Açıklama</label>
+            <input type="text" placeholder="İşlem Açıklaması">
+        </div>
+        <div id="transfer-info">
+            <div class="form-group">
+                <label>Çıkış (Kaynak) Ambar</label>
+                <select>
+                    <option selected>Merkez Depo (Ambar 01)</option>
+                    <option>Şube Depo (Ambar 02)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Giriş (Hedef) Ambar</label>
+                <select>
+                    <option>Şube Depo (Ambar 02)</option>
+                    <option>Merkez Depo (Ambar 01)</option>
+                </select>
+            </div>
+        </div>
+        <div id="sayim-info">
+            <div class="form-group">
+                <label>Sayım Yapılan Ambar</label>
+                <select>
+                    <option selected>Merkez Depo (Ambar 01)</option>
+                    <option>Şube Depo (Ambar 02)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sayım Fişi No</label>
+                <input type="text" value="SYM-112025-01" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table-responsive">
+            <thead>
+                <tr id="table-header-row">
+                    <th style="width: 5%;">Sıra</th>
+                    <th style="width: 8%;">Özel Kod</th> <th style="width: 12%;">Stok Kodu (F4)</th> <th style="width: 25%;">Stok Adı</th>
+                    <th style="width: 12%;" class="transfer-header">Transfer Miktar</th>
+                    <th style="width: 8%;">Birim</th>
+                    <th style="width: 15%; display: none;" class="sayim-header">Sistem Miktar</th>
+                    <th style="width: 10%; display: none;" class="sayim-header">Fiili Sayım Miktar</th>
+                    <th style="width: 10%; display: none;" class="sayim-header">Fark Miktar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="transfer-row-example">
+                    <td>1</td>
+                    <td><input type="text" class="data-input" value="OTM-YAĞ"></td> <td class="stok-td">
+                        <input type="text" class="data-input stok-input" value="YAG-SYN-5W30">
+                        <button class="btn-stok-search">F4</button>
+                    </td> <td><input type="text" class="data-input" value="Tam Sentetik Motor Yağı" readonly></td>
+                    <td><input type="text" class="data-input" value="100" style="text-align: right;"></td>
+                    <td>Adet</td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                </tr>
+                <tr id="sayim-row-example" style="display: none;">
+                    <td>2</td>
+                    <td><input type="text" class="data-input" value="FREN"></td> <td class="stok-td">
+                        <input type="text" class="data-input stok-input" value="FB-2025-A">
+                        <button class="btn-stok-search">F4</button>
+                    </td> <td><input type="text" class="data-input" value="Fren Balatası Seti" readonly></td>
+                    <td style="display: none;" class="transfer-data"></td>
+                    <td>Set</td>
+                    <td class="sayim-data"><input type="text" class="data-input" value="12" readonly></td>
+                    <td class="sayim-data"><input type="text" class="data-input" value="10"></td>
+                    <td class="sayim-data fark-td">-2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" class="data-input" placeholder="Özel Kod"></td> <td class="stok-td">
+                        <input type="text" class="data-input stok-input" placeholder="Stok Kodu...">
+                        <button class="btn-stok-search">F4</button>
+                    </td> <td><input type="text" class="data-input" placeholder="Stok Adı otomatik gelecek" readonly></td>
+                    <td><input type="text" class="data-input" placeholder="0"></td>
+                    <td></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="bottom-summary">
+        <div>Toplam İşlem Kalemi: 2 Adet</div>
+        <div id="transfer-summary">Toplam Transfer Miktarı: 110 Adet</div>
+        <div id="sayim-summary" style="display: none;">Toplam Fark (Miktar): -2 Adet | Toplam Fark (TL): 400,00 TL</div>
+    </div>
+  </div>
+  <script>
+    function updateScreenForOperation(type) {
+        const titleElement = document.getElementById('entry-title');
+        const transferInfo = document.getElementById('transfer-info');
+        const sayimInfo = document.getElementById('sayim-info');
+        const transferSummary = document.getElementById('transfer-summary');
+        const sayimSummary = document.getElementById('sayim-summary');
+        const transferHeaders = document.querySelectorAll('.transfer-header');
+        const sayimHeaders = document.querySelectorAll('.sayim-header');
+        const transferData = document.querySelectorAll('.transfer-data');
+        const sayimData = document.querySelectorAll('.sayim-data');
+        // Örnek satırların gösterimini değiştir
+        const transferRow = document.getElementById('transfer-row-example');
+        const sayimRow = document.getElementById('sayim-row-example');
+        if (type === 'transfer') {
+            titleElement.textContent = 'AMBAR TRANSFER GİRİŞ EKRANI';
+            transferInfo.style.display = 'grid';
+            sayimInfo.style.display = 'none';
+            transferSummary.style.display = 'block';
+            sayimSummary.style.display = 'none';
+            // Tabloyu Transfer'e göre ayarla
+            transferHeaders.forEach(th => th.style.display = 'table-cell');
+            sayimHeaders.forEach(th => th.style.display = 'none');
+            // Transfer/Sayım data hücrelerini Transfer moduna göre ayarla
+            transferData.forEach(td => td.style.display = 'table-cell');
+            sayimData.forEach(td => td.style.display = 'none');
+            // Örnek satırları ayarla
+            transferRow.style.display = 'table-row';
+            sayimRow.style.display = 'none';
+        } else if (type === 'sayim') {
+            titleElement.textContent = 'ENVANTER SAYIM GİRİŞ EKRANI';
+            transferInfo.style.display = 'none';
+            sayimInfo.style.display = 'block';
+            transferSummary.style.display = 'none';
+            sayimSummary.style.display = 'block';
+            // Tabloyu Sayım'a göre ayarla
+            transferHeaders.forEach(th => th.style.display = 'none');
+            sayimHeaders.forEach(th => th.style.display = 'table-cell');
+             // Transfer/Sayım data hücrelerini Sayım moduna göre ayarla
+            transferData.forEach(td => td.style.display = 'none');
+            sayimData.forEach(td => td.style.display = 'table-cell');
+             // Örnek satırları ayarla
+            transferRow.style.display = 'none';
+            sayimRow.style.display = 'table-row';
+        }
+    }
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("F2: Yeni İşlem (Transfer/Sayım) kaydı başlatılıyor."); }
+      if (event.key === "F4") { event.preventDefault(); alert("F4: Stok Kartı Arama Ekranı açılıyor."); }
+      if (event.key === "F5") { event.preventDefault(); alert("F5: İşlem kaydediliyor ve stok miktarları güncelleniyor (Kaydet)."); }
+      if (event.key === "F10") { event.preventDefault(); alert("F10: Ekran kapatılıyor."); }
+    });
+    document.getElementById('operation-type').addEventListener('change', function() {
+        updateScreenForOperation(this.value);
+    });
+    // Sayfa yüklendiğinde varsayılan stili uygula (Transfer)
+    updateScreenForOperation(document.getElementById('operation-type').value);
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 9. KASA / BANKA İŞLEM GİRİŞ (kasa_banka_giris.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Kasa / Banka İşlem Giriş Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #f59e0b; } /* Finans için Turuncu ton */
+    .type-select { display: flex; gap: 10px; align-items: center; }
+    .type-select select { padding: 8px; border-radius: 4px; border: 2px solid #f59e0b; font-size: 14px; font-weight: 700; color: #f59e0b; background: #fffdf7; }
+    /* İŞLEM BİLGİLERİ GRİDİ */
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    /* SOL ALAN: HESAP BİLGİLERİ */
+    .account-info, .transaction-info { padding: 15px; border: 1px solid #fed7aa; border-radius: 8px; background: #fff7ed; margin-bottom: 20px; }
+    .account-info h3, .transaction-info h3 { font-size: 16px; color: #c2410c; margin-bottom: 15px; border-bottom: 1px solid #fdba74; padding-bottom: 5px; }
+    .form-group-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .form-group-single { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #fbbf24; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* CARİ SEÇİM */
+    .cari-input-group { position: relative; }
+    .cari-input-group input { padding-right: 30px; }
+    .cari-input-group .btn-cari-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    /* SAĞ ALAN: TUTAR VE ÖZET */
+    .amount-section { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100%;
+        padding: 20px;
+        border: 2px solid #ef4444; /* Ödeme (Kırmızı) */
+        border-radius: 10px;
+        background: #fef2f2;
+    }
+    .amount-section h3 { color: #b91c1c; margin-bottom: 15px; font-size: 18px; }
+    .amount-section input {
+        font-size: 36px;
+        font-weight: 900;
+        text-align: center;
+        color: #b91c1c;
+        border: 3px solid #f87171;
+        border-radius: 8px;
+        padding: 15px 10px;
+        width: 80%;
+        background: white;
+    }
+    /* Tahsilat Durumunda Renk Değişimi (Giriş: Yeşil) */
+    .tahsilat-color { 
+        border-color: #10b981 !important; 
+        color: #047857 !important; 
+        background: #ecfdf5 !important;
+    }
+    .tahsilat-color h3 { color: #047857 !important; }
+    .tahsilat-color input { border-color: #34d399 !important; color: #047857 !important; }
+    /* Virman Durumunda Renk Değişimi (Mavi) */
+    .virman-color { 
+        border-color: #3b82f6 !important; 
+        color: #2563eb !important; 
+        background: #eff6ff !important;
+    }
+    .virman-color h3 { color: #2563eb !important; }
+    .virman-color input { border-color: #93c5fd !important; color: #2563eb !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni Fiş</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">KASA / BANKA İŞLEM GİRİŞ EKRANI - ÖDEME (ÇIKIŞ)</div>
+        <div class="type-select">
+            <select id="operation-type">
+                <option value="ödeme" selected>ÖDEME (Çıkış)</option>
+                <option value="tahsilat">TAHSİLAT (Giriş)</option>
+                <option value="virman">KASA/BANKA VİRMAN</option>
+            </select>
+        </div>
+    </div>
+    <div class="main-grid">
+        <div class="left-side">
+            <div class="account-info">
+                <h3>1. Hesap ve Tarih Bilgileri</h3>
+                <div class="form-group-triple">
+                    <div class="form-group">
+                        <label>Hareket Tipi</label>
+                        <select id="movement-type">
+                            <option value="kasa">Kasa</option>
+                            <option value="banka">Banka</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hesap Kodu</label>
+                        <select id="account-code">
+                            <option>Merkez Kasa (TL)</option>
+                            <option>İş Bankası (TL)</option>
+                            <option>Garanti Bankası (USD)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>İşlem Tarihi</label>
+                        <input type="date" value="2025-11-20">
+                    </div>
+                </div>
+                <div class="form-group-single">
+                    <label>Açıklama</label>
+                    <input type="text" placeholder="Örn: X firmasına toptan ödeme (Fatura No: 12345)">
+                </div>
+            </div>
+            <div class="transaction-info" id="cari-area">
+                <h3>2. Cari ve Detay Bilgileri</h3>
+                <div class="form-group-single">
+                    <label>Cari Kodu (F4 - Zorunlu)</label>
+                    <div class="cari-input-group">
+                        <input type="text" value="TD-0055" placeholder="CR Kodu">
+                        <button class="btn-cari-search">F4</button>
+                    </div>
+                </div>
+                <div class="form-group-single">
+                    <label>Cari Adı</label>
+                    <input type="text" value="Güven Oto Yedek Parça Ltd. Şti." readonly>
+                </div>
+                <div class="form-group-single">
+                    <label>Belge/Makbuz No</label>
+                    <input type="text" placeholder="Varsa Makbuz veya Belge Numarası">
+                </div>
+            </div>
+            <div class="transaction-info" id="virman-area" style="display: none;">
+                <h3>2. Virman (Transfer) Bilgileri</h3>
+                <div class="form-group-triple">
+                    <div class="form-group">
+                        <label>Hedef Hareket Tipi</label>
+                        <select>
+                            <option>Kasa</option>
+                            <option>Banka</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Hedef Hesap Kodu</label>
+                        <select>
+                            <option>İş Bankası (TL)</option>
+                            <option>Merkez Kasa (TL)</option>
+                            <option>Garanti Bankası (USD)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="amount-section" id="amount-area">
+                <h3>ÖDENECEK TUTAR (TL)</h3>
+                <input type="text" value="2.500,00">
+                <p style="margin-top: 15px; font-size: 13px; font-weight: 600; color: #b91c1c;" id="cari-bakiye">Cari Bakiyesi: -41.500,00 TL (Borçlu)</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="margin-top: auto;">
+      Safire Bilgisayar • Safire Stok Programı v3.0 – Kasa / Banka İşlem Girişi 💙
+    </div>
+  </div>
+  <script>
+    function updateOperation(type) {
+        const amountArea = document.getElementById('amount-area');
+        const titleElement = document.getElementById('entry-title');
+        const cariArea = document.getElementById('cari-area');
+        const virmanArea = document.getElementById('virman-area');
+        const cariBakiye = document.getElementById('cari-bakiye');
+        amountArea.classList.remove('tahsilat-color', 'virman-color');
+        if (type === 'tahsilat') {
+            // Tahsilat (Giriş: Yeşil)
+            amountArea.classList.add('tahsilat-color');
+            titleElement.style.color = '#059669';
+            titleElement.textContent = 'KASA / BANKA İŞLEM GİRİŞ EKRANI - TAHSİLAT (GİRİŞ)';
+            cariBakiye.textContent = 'Cari Bakiyesi: +5.200,00 TL (Alacaklı)';
+            cariArea.style.display = 'block';
+            virmanArea.style.display = 'none';
+        } else if (type === 'ödeme') {
+            // Ödeme (Çıkış: Turuncu/Kırmızı)
+            titleElement.style.color = '#f59e0b';
+            titleElement.textContent = 'KASA / BANKA İŞLEM GİRİŞ EKRANI - ÖDEME (ÇIKIŞ)';
+            cariBakiye.textContent = 'Cari Bakiyesi: -41.500,00 TL (Borçlu)';
+            cariArea.style.display = 'block';
+            virmanArea.style.display = 'none';
+        } else if (type === 'virman') {
+            // Virman (Mavi)
+            amountArea.classList.add('virman-color');
+            titleElement.style.color = '#2563eb';
+            titleElement.textContent = 'KASA / BANKA İŞLEM GİRİŞ EKRANI - VİRMAN (TRANSFER)';
+            cariBakiye.textContent = 'İşlem Tipi: Kasa/Banka arası transfer.';
+            cariArea.style.display = 'none';
+            virmanArea.style.display = 'block';
+        }
+    }
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("F2: Yeni Kasa/Banka fişi başlatılıyor."); }
+      if (event.key === "F4") { event.preventDefault(); alert("F4: Cari Kartı Arama Ekranı açılıyor."); }
+      if (event.key === "F5") { event.preventDefault(); alert("F5: İşlem kaydediliyor ve Kasa/Banka/Cari bakiyeleri güncelleniyor (Kaydet)."); }
+      if (event.key === "F10") { event.preventDefault(); alert("F10: Ekran kapatılıyor."); }
+    });
+    document.getElementById('operation-type').addEventListener('change', function() {
+        updateOperation(this.value);
+    });
+    // Sayfa yüklendiğinde varsayılan stili uygula
+    updateOperation(document.getElementById('operation-type').value);
+  </script>
+</body>
+</html>
+
+# =================================================================
+# 10. ÇEK / SENET TAKİP (cek_senet_giris.html)
+# =================================================================
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Çek / Senet Takip Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f6 { background: #f59e0b; color: white; } /* Durum Değiştir */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #a855f7; } /* Çek/Senet için Mor ton */
+    .type-select select { padding: 8px; border-radius: 4px; border: 2px solid #a855f7; font-size: 14px; font-weight: 700; color: #a855f7; background: #faf5ff; }
+    /* İŞLEM DETAY GRİDİ */
+    .detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; flex-grow: 1; }
+    /* SOL ALAN: ANA BİLGİLER */
+    .main-info { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; padding: 15px; border: 1px solid #d8b4fe; border-radius: 8px; background: #fbfaff; }
+    .main-info .form-group-full { grid-column: span 3; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #c084fc; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* Cari Seçim (F4) */
+    .cari-input-group { position: relative; }
+    .cari-input-group input { padding-right: 30px; }
+    .cari-input-group .btn-cari-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    /* SAĞ ALAN: TUTAR VE DURUM */
+    .right-side-panel { display: flex; flex-direction: column; gap: 20px; }
+    /* TUTAR VE VADE */
+    .amount-section { 
+        padding: 20px;
+        border: 2px solid #a855f7;
+        border-radius: 10px;
+        background: #f3e8ff;
+    }
+    .amount-section h3 { color: #7e22ce; margin-bottom: 15px; font-size: 16px; border-bottom: 1px dashed #c084fc; padding-bottom: 5px; }
+    .amount-section input {
+        font-size: 28px;
+        font-weight: 900;
+        text-align: center;
+        color: #7e22ce;
+        border: 3px solid #c084fc;
+        border-radius: 8px;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    /* DURUM VE İŞLEM GEÇMİŞİ */
+    .status-section { 
+        padding: 15px;
+        border: 1px solid #a855f7;
+        border-radius: 8px;
+        background: #faf5ff;
+        flex-grow: 1;
+    }
+    .current-status { 
+        font-size: 16px; 
+        font-weight: 800; 
+        color: #10b981; 
+        padding: 10px; 
+        background: #ecfdf5; 
+        border: 1px solid #10b981; 
+        border-radius: 6px; 
+        text-align: center; 
+        margin-bottom: 10px;
+    }
+    .status-history { 
+        list-style: none; 
+        font-size: 11px; 
+        height: 150px; 
+        overflow-y: auto; 
+        padding-left: 0;
+    }
+    .status-history li { 
+        padding: 3px 0; 
+        border-bottom: 1px dotted #e2e8f0; 
+        color: #475569;
+    }
+    .status-history span { font-weight: 600; color: #334155; }
+    /* ÖZET */
+    .summary {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px;
+        border-top: 2px solid #a855f7;
+        background: #f3e8ff;
+        font-size: 14px;
+        font-weight: 700;
+        margin-top: auto;
+    }
+    .summary div strong { color: #7e22ce; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni Kayıt</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f6" data-key="F6">F6: Durum Değiştir / Ciro</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">ÇEK / SENET TAKİP EKRANI - ALINAN ÇEK</div>
+        <div class="type-select">
+            <select id="document-type">
+                <option value="alınan-çek" selected>Alınan Çek (Portföy)</option>
+                <option value="verilen-çek">Verilen Kendi Çekimiz</option>
+                <option value="alınan-senet">Alınan Senet</option>
+                <option value="verilen-senet">Verilen Kendi Senetimiz</option>
+            </select>
+        </div>
+    </div>
+    <div class="detail-grid">
+        <div class="left-side">
+            <div class="main-info">
+                <div class="form-group">
+                    <label>Çek/Senet No</label>
+                    <input type="text" value="387945">
+                </div>
+                <div class="form-group">
+                    <label>Belge Tarihi (Alış/Veriş)</label>
+                    <input type="date" value="2025-11-20">
+                </div>
+                <div class="form-group">
+                    <label>Vade Tarihi</label>
+                    <input type="date" value="2026-02-15">
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Borçlu/Alacaklı Cari Kodu (F4)</label>
+                    <div class="cari-input-group">
+                        <input type="text" value="CR-0010" placeholder="CR Kodu">
+                        <button class="btn-cari-search">F4</button>
+                    </div>
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Cari Adı (Mükellef Adı)</label>
+                    <input type="text" value="Yılmaz Ticaret ve Otomotiv A.Ş." readonly>
+                </div>
+                <div class="form-group">
+                    <label>Banka Adı (Keşideci Banka)</label>
+                    <input type="text" value="Garanti Bankası">
+                </div>
+                <div class="form-group">
+                    <label>Şube Kodu / Adı</label>
+                    <input type="text" value="1245 / Merkez">
+                </div>
+                <div class="form-group">
+                    <label>Mütabakat Kodu</label>
+                    <input type="text" placeholder="Varsa Referans No">
+                </div>
+                <div class="form-group form-group-full">
+                    <label>Açıklama</label>
+                    <textarea style="width: 100%; height: 60px; padding: 5px; border: 1px solid #c084fc;" placeholder="Bu çekin alınma nedeni/borçluya verilme nedeni"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="right-side-panel">
+            <div class="amount-section">
+                <h3>ÇEK/SENET TUTARI VE VADE</h3>
+                <input type="text" value="12.500,00 TL">
+                <div class="form-group">
+                    <label>Vadeye Kalan Gün</label>
+                    <input type="text" value="87 Gün" readonly style="font-size: 16px; font-weight: 700; color: #a855f7;">
+                </div>
+            </div>
+            <div class="status-section">
+                <h3>GEÇERLİ DURUM VE GEÇMİŞ</h3>
+                <div class="current-status" id="current-status">PORTFÖYDE (TAHSİL EDİLMEDİ)</div>
+                <ul class="status-history">
+                    <li>20.11.2025 10:00: <span>Portföye Giriş</span> (CR-0010'dan Alındı)</li>
+                    <li>20.11.2025 10:00: Kayıt Oluşturuldu</li>
+                    </ul>
+            </div>
+        </div>
+    </div>
+    <div class="summary">
+        <div><strong>Portföydeki Çek Toplamı:</strong> 85.000,00 TL</div>
+        <div><strong>Portföydeki Senet Toplamı:</strong> 45.000,00 TL</div>
+        <div>**TOPLAM RİSK:** **130.000,00 TL**</div>
+    </div>
+  </div>
+  <script>
+    function updateDocumentType(type) {
+        const titleElement = document.getElementById('entry-title');
+        const statusElement = document.getElementById('current-status');
+        const isCek = type.includes('çek');
+        const isAlinan = type.includes('alınan');
+        let titleText = type.toUpperCase().replace('-', ' / ');
+        let statusText = isAlinan ? 'PORTFÖYDE (TAHSİL EDİLMEDİ)' : 'VERİLDİ (ÖDEME BEKLİYOR)';
+        let statusColor = isAlinan ? '#10b981' : '#f59e0b';
+        titleElement.textContent = `ÇEK / SENET TAKİP EKRANI - ${titleText}`;
+        statusElement.textContent = statusText;
+        statusElement.style.backgroundColor = isAlinan ? '#ecfdf5' : '#fffbeb';
+        statusElement.style.color = statusColor;
+        // Alınan çeklerde borçlu cari, Verilen çeklerde alacaklı cari (bizim muhatabımız)
+        const cariLabel = document.querySelector('.main-info .form-group-full label');
+        cariLabel.textContent = isAlinan ? 'Borçlu Cari Kodu (F4)' : 'Alacaklı Cari Kodu (F4)';
+    }
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") {

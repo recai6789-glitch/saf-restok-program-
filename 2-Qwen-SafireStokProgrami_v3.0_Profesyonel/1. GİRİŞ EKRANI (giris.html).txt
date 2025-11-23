@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Giriş</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      width: 400px;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logo {
+      font-size: 48px;
+      color: #4f46e5;
+    }
+    .logo::before {
+      content: "💎";
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #4f46e5;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      text-align: left;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #374151;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="logo"></div>
+    <div class="title">SAFIRE STOK PROGRAMI</div>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="kullaniciAdi" placeholder="Ahmet">
+    </div>
+    <div class="form-group">
+      <label>Şifre</label>
+      <input type="password" id="sifre" placeholder="••••••••">
+    </div>
+    <button class="btn-login" onclick="girisYap()">Giriş Yap</button>
+    <div class="footer">
+      Safire Bilgisayar • © 2025 | v3.0 Final
+    </div>
+  </div>
+  <script>
+    function girisYap() {
+      const kullanici = document.getElementById('kullaniciAdi').value.trim();
+      const sifre = document.getElementById('sifre').value.trim();
+      if (!kullanici || !sifre) {
+        alert("Kullanıcı adı ve şifre gereklidir.");
+        return;
+      }
+      // Gerçek uygulamada: Flask backend'e POST isteği atılır
+      localStorage.setItem('currentUser', kullanici);
+      window.location.href = 'ana_ekran.html';
+    }
+  </script>
+</body>
+</html>

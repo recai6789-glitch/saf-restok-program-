@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Ambar İşlem Giriş Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #f97316; } /* Ambar için Turuncu ton */
+    .type-select select { padding: 5px; border-radius: 4px; border: 2px solid #f97316; font-size: 14px; font-weight: 700; color: #f97316; background: #fff7ed; }
+    /* İŞLEM BİLGİLERİ GRİDİ */
+    .process-info { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; padding: 10px; border: 1px solid #fed7aa; border-radius: 8px; background: #fff7ed; }
+    /* TRANSFERE ÖZEL STİL */
+    #transfer-info { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 15px; 
+        grid-column: span 2; 
+        border-left: 1px solid #fdba74; 
+        padding-left: 15px;
+    }
+    /* SAYIMA ÖZEL STİL */
+    #sayim-info { 
+        display: none; /* Varsayılan olarak gizli */
+        grid-column: span 2; 
+        border-left: 1px solid #fdba74; 
+        padding-left: 15px;
+    }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 7px; border: 1px solid #f97316; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* STOK HAREKET TABLOSU */
+    .table-container { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+    .table-responsive { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .table-responsive th, .table-responsive td { border: 1px solid #e2e8f0; padding: 6px; text-align: left; }
+    .table-responsive th { background: #f97316; color: white; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+    /* İŞLEM SATIRLARI */
+    .data-input { width: 100%; border: none; padding: 5px; font-size: 12px; text-align: right; background: transparent; }
+    .stok-input { text-align: left; font-weight: 600; }
+    .stok-td { position: relative; }
+    .stok-td .btn-stok-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 5px; background: #3b82f6; color: white; border: none; border-radius: 0; font-size: 10px; cursor: pointer; }
+    /* SAYIMDA GÖSTERİLECEK FARKLAR */
+    .fark-td { background-color: #fef2f2; font-weight: 700; color: #b91c1c; text-align: right !important; }
+    /* ALT BÖLÜM - ÖZET */
+    .bottom-summary { 
+        padding: 10px; 
+        border-top: 2px solid #f97316; 
+        display: flex; 
+        justify-content: space-between; 
+        font-weight: 700; 
+        font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni İşlem</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">AMBAR TRANSFER GİRİŞ EKRANI</div>
+        <div class="type-select">
+            <select id="operation-type">
+                <option value="transfer" selected>Ambar Transferi</option>
+                <option value="sayim">Sayım Giriş / Düzeltme</option>
+            </select>
+        </div>
+    </div>
+    <div class="process-info">
+        <div class="form-group">
+            <label>İşlem Tarihi</label>
+            <input type="date" value="2025-11-20">
+        </div>
+        <div class="form-group">
+            <label>Belge No</label>
+            <input type="text" value="TR-00105" placeholder="Referans veya Belge No">
+        </div>
+        <div class="form-group">
+            <label>Açıklama</label>
+            <input type="text" placeholder="İşlem Açıklaması">
+        </div>
+        <div id="transfer-info">
+            <div class="form-group">
+                <label>Çıkış (Kaynak) Ambar</label>
+                <select>
+                    <option selected>Merkez Depo (Ambar 01)</option>
+                    <option>Şube Depo (Ambar 02)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Giriş (Hedef) Ambar</label>
+                <select>
+                    <option>Şube Depo (Ambar 02)</option>
+                    <option>Merkez Depo (Ambar 01)</option>
+                </select>
+            </div>
+        </div>
+        <div id="sayim-info">
+            <div class="form-group">
+                <label>Sayım Yapılan Ambar</label>
+                <select>
+                    <option selected>Merkez Depo (Ambar 01)</option>
+                    <option>Şube Depo (Ambar 02)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sayım Fişi No</label>
+                <input type="text" value="SYM-112025-01" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table-responsive">
+            <thead>
+                <tr id="table-header-row">
+                    <th style="width: 5%;">Sıra</th>
+                    <th style="width: 8%;">Özel Kod</th> <th style="width: 12%;">Stok Kodu (F4)</th> <th style="width: 25%;">Stok Adı</th>
+                    <th style="width: 12%;" class="transfer-header">Transfer Miktar</th>
+                    <th style="width: 8%;">Birim</th>
+                    <th style="width: 15%; display: none;" class="sayim-header">Sistem Miktar</th>
+                    <th style="width: 10%; display: none;" class="sayim-header">Fiili Sayım Miktar</th>
+                    <th style="width: 10%; display: none;" class="sayim-header">Fark Miktar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="transfer-row-example">
+                    <td>1</td>
+                    <td><input type="text" class="data-input" value="OTM-YAĞ"></td> <td class="stok-td">
+                        <input type="text" class="data-input stok-input" value="YAG-SYN-5W30">
+                        <button class="btn-stok-search">F4</button>
+                    </td> <td><input type="text" class="data-input" value="Tam Sentetik Motor Yağı" readonly></td>
+                    <td><input type="text" class="data-input" value="100" style="text-align: right;"></td>
+                    <td>Adet</td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                </tr>
+                <tr id="sayim-row-example" style="display: none;">
+                    <td>2</td>
+                    <td><input type="text" class="data-input" value="FREN"></td> <td class="stok-td">
+                        <input type="text" class="data-input stok-input" value="FB-2025-A">
+                        <button class="btn-stok-search">F4</button>
+                    </td> <td><input type="text" class="data-input" value="Fren Balatası Seti" readonly></td>
+                    <td style="display: none;" class="transfer-data"></td>
+                    <td>Set</td>
+                    <td class="sayim-data"><input type="text" class="data-input" value="12" readonly></td>
+                    <td class="sayim-data"><input type="text" class="data-input" value="10"></td>
+                    <td class="sayim-data fark-td">-2</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><input type="text" class="data-input" placeholder="Özel Kod"></td> <td class="stok-td">
+                        <input type="text" class="data-input stok-input" placeholder="Stok Kodu...">
+                        <button class="btn-stok-search">F4</button>
+                    </td> <td><input type="text" class="data-input" placeholder="Stok Adı otomatik gelecek" readonly></td>
+                    <td><input type="text" class="data-input" placeholder="0"></td>
+                    <td></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                    <td style="display: none;" class="sayim-data"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="bottom-summary">
+        <div>Toplam İşlem Kalemi: 2 Adet</div>
+        <div id="transfer-summary">Toplam Transfer Miktarı: 110 Adet</div>
+        <div id="sayim-summary" style="display: none;">Toplam Fark (Miktar): -2 Adet | Toplam Fark (TL): 400,00 TL</div>
+    </div>
+  </div>
+  <script>
+    function updateScreenForOperation(type) {
+        const titleElement = document.getElementById('entry-title');
+        const transferInfo = document.getElementById('transfer-info');
+        const sayimInfo = document.getElementById('sayim-info');
+        const transferSummary = document.getElementById('transfer-summary');
+        const sayimSummary = document.getElementById('sayim-summary');
+        const transferHeaders = document.querySelectorAll('.transfer-header');
+        const sayimHeaders = document.querySelectorAll('.sayim-header');
+        const transferData = document.querySelectorAll('.transfer-data');
+        const sayimData = document.querySelectorAll('.sayim-data');
+        // Örnek satırların gösterimini değiştir
+        const transferRow = document.getElementById('transfer-row-example');
+        const sayimRow = document.getElementById('sayim-row-example');
+        if (type === 'transfer') {
+            titleElement.textContent = 'AMBAR TRANSFER GİRİŞ EKRANI';
+            transferInfo.style.display = 'grid';
+            sayimInfo.style.display = 'none';
+            transferSummary.style.display = 'block';
+            sayimSummary.style.display = 'none';
+            // Tabloyu Transfer'e göre ayarla
+            transferHeaders.forEach(th => th.style.display = 'table-cell');
+            sayimHeaders.forEach(th => th.style.display = 'none');
+            // Transfer/Sayım data hücrelerini Transfer moduna göre ayarla
+            transferData.forEach(td => td.style.display = 'table-cell');
+            sayimData.forEach(td => td.style.display = 'none');
+            // Örnek satırları ayarla
+            transferRow.style.display = 'table-row';
+            sayimRow.style.display = 'none';
+        } else if (type === 'sayim') {
+            titleElement.textContent = 'ENVANTER SAYIM GİRİŞ EKRANI';
+            transferInfo.style.display = 'none';
+            sayimInfo.style.display = 'block';
+            transferSummary.style.display = 'none';
+            sayimSummary.style.display = 'block';
+            // Tabloyu Sayım'a göre ayarla
+            transferHeaders.forEach(th => th.style.display = 'none');
+            sayimHeaders.forEach(th => th.style.display = 'table-cell');
+             // Transfer/Sayım data hücrelerini Sayım moduna göre ayarla
+            transferData.forEach(td => td.style.display = 'none');
+            sayimData.forEach(td => td.style.display = 'table-cell');
+             // Örnek satırları ayarla
+            transferRow.style.display = 'none';
+            sayimRow.style.display = 'table-row';
+        }
+    }
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("F2: Yeni İşlem (Transfer/Sayım) kaydı başlatılıyor."); }
+      if (event.key === "F4") { event.preventDefault(); alert("F4: Stok Kartı Arama Ekranı açılıyor."); }
+      if (event.key === "F5") { event.preventDefault(); alert("F5: İşlem kaydediliyor ve stok miktarları güncelleniyor (Kaydet)."); }
+      if (event.key === "F10") { event.preventDefault(); alert("F10: Ekran kapatılıyor."); }
+    });
+    document.getElementById('operation-type').addEventListener('change', function() {
+        updateScreenForOperation(this.value);
+    });
+    // Sayfa yüklendiğinde varsayılan stili uygula (Transfer)
+    updateScreenForOperation(document.getElementById('operation-type').value);
+  </script>
+</body>
+</html>

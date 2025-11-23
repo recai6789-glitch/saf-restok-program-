@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Fatura / İrsaliye Giriş Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f6 { background: #f59e0b; color: white; } /* Yazdır */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #059669; } /* Varsayılan: Satış için yeşil ton */
+    .type-select { display: flex; gap: 10px; align-items: center; }
+    .type-select label { font-size: 12px; font-weight: 600; color: #475569; }
+    .type-select select { padding: 5px; border-radius: 4px; border: 1px solid #cbd5e1; font-size: 13px; font-weight: 700; color: #059669; }
+    /* Alış ve Giriş İşlemleri için Stil (JS ile güncellenecek) */
+    .alis-style { 
+        color: #2563eb !important; 
+        border-color: #2563eb !important; 
+        background: #eff6ff !important;
+    }
+    /* CARİ BİLGİ VE TARİHLER */
+    .cari-header { display: grid; grid-template-columns: 1fr 2fr 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; padding: 10px; border: 1px solid #c7d2fe; border-radius: 8px; background: #f5f8ff; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 7px; border: 1px solid #94a3b8; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* Özel Cari Kodu Alanı (F4 ile Cari seçimi) */
+    .cari-input-group { position: relative; }
+    .cari-input-group input { padding-right: 30px; }
+    .cari-input-group .btn-cari-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    /* STOK HAREKET TABLOSU */
+    .table-container { flex-grow: 1; overflow-y: auto; margin-bottom: 15px; border: 1px solid #e2e8f0; }
+    .table-responsive { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .table-responsive th, .table-responsive td { border: 1px solid #e2e8f0; padding: 6px; text-align: left; }
+    .table-responsive th { background: #059669; color: white; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+    /* İŞLEM SATIRLARI */
+    .data-input { width: 100%; border: none; padding: 5px; font-size: 12px; text-align: right; background: transparent; }
+    .stok-input { text-align: left; font-weight: 600; }
+    .stok-td { position: relative; }
+    .stok-td .btn-stok-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 5px; background: #3b82f6; color: white; border: none; border-radius: 0; font-size: 10px; cursor: pointer; }
+    /* SONUÇ VE TOPLAM */
+    .bottom-summary { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-top: auto; }
+    .payment-info { padding: 10px; border: 1px solid #a7f3d0; border-radius: 8px; background: #f0fff4; }
+    .totals { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .total-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #d1d5db; }
+    .total-item label { font-weight: 500; font-size: 13px; color: #475569; }
+    .total-item span { font-weight: 700; font-size: 14px; color: #047857; }
+    .grand-total { background: #047857; color: white; padding: 10px; border-radius: 6px; font-size: 18px !important; font-weight: 900 !important; }
+    /* Alış İşlemi Toplam Renkleri (JS ile değiştirilecek) */
+    .alis-total { background: #2563eb !important; }
+    .alis-total span { color: white !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni Kayıt</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f6" data-key="F6">F6: Yazdır</button>
+        <button class="btn btn-f4" data-key="F4 (Cari)">F4: Cari Kart</button>
+        <button class="btn btn-f4" data-key="F4 (Stok)">F4: Stok Kart</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">FATURA - SATIŞ GİRİŞ EKRANI</div>
+        <div class="type-select">
+            <label for="transaction-type">İşlem Türü:</label>
+            <select id="transaction-type">
+                <option value="fatura-satis" selected>Fatura - Satış</option>
+                <option value="fatura-alis">Fatura - Alış</option>
+                <option value="irsaliye-satis">İrsaliye - Satış</option>
+                <option value="irsaliye-alis">İrsaliye - Alış</option>
+            </select>
+        </div>
+    </div>
+    <div class="cari-header">
+        <div class="form-group">
+            <label>Cari Kod (F4)</label>
+            <div class="cari-input-group">
+                <input type="text" value="CR-0010" placeholder="CR Kodu">
+                <button class="btn-cari-search">F4</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Cari Adı</label>
+            <input type="text" value="Yılmaz Ticaret ve Otomotiv A.Ş." readonly>
+        </div>
+        <div class="form-group">
+            <label>Belge Tarihi</label>
+            <input type="date" value="2025-11-20">
+        </div>
+        <div class="form-group">
+            <label>Vade Tarihi</label>
+            <input type="date" value="2025-12-20">
+        </div>
+        <div class="form-group">
+            <label>Seri / Sıra No</label>
+            <input type="text" value="FS-00124" placeholder="Seri No">
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table-responsive">
+            <thead>
+                <tr id="table-header-row">
+                    <th style="width: 5%;">Sıra</th>
+                    <th style="width: 15%;">Stok Kodu (F4)</th>
+                    <th style="width: 25%;">Stok Adı</th>
+                    <th style="width: 8%;">Miktar</th>
+                    <th style="width: 7%;">Birim</th>
+                    <th style="width: 10%;">Birim Fiyat</th>
+                    <th style="width: 7%;">İskonto (%)</th>
+                    <th style="width: 8%;">KDV (%)</th>
+                    <th style="width: 15%;">Tutar (TL)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="stok-td">
+                        <input type="text" class="data-input stok-input" value="FB-2025-A">
+                        <button class="btn-stok-search">F4</button>
+                    </td>
+                    <td><input type="text" class="data-input" value="Fren Balatası Seti"></td>
+                    <td><input type="text" class="data-input" value="10" style="text-align: right;"></td>
+                    <td>Adet</td>
+                    <td><input type="text" class="data-input" value="1.200,00" style="text-align: right;"></td>
+                    <td><input type="text" class="data-input" value="5" style="text-align: right;"></td>
+                    <td>20</td>
+                    <td><input type="text" class="data-input" value="11.400,00" readonly></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="stok-td">
+                        <input type="text" class="data-input stok-input" placeholder="Stok Kodu...">
+                        <button class="btn-stok-search">F4</button>
+                    </td>
+                    <td><input type="text" class="data-input" placeholder="Stok Adı otomatik gelecek"></td>
+                    <td><input type="text" class="data-input" placeholder="0"></td>
+                    <td></td>
+                    <td><input type="text" class="data-input" placeholder="0,00"></td>
+                    <td><input type="text" class="data-input" value="0"></td>
+                    <td>20</td>
+                    <td><input type="text" class="data-input" value="0,00" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="bottom-summary">
+        <div class="payment-info">
+            <label>Ödeme Şekli ve Açıklamalar</label>
+            <select style="width: 100%; padding: 7px; margin-bottom: 10px; border-color: #3b82f6;">
+                <option>Açık Hesap (Vade 30 Gün)</option>
+                <option>Nakit</option>
+                <option>Kredi Kartı</option>
+            </select>
+            <textarea style="width: 100%; height: 60px; padding: 5px; border: 1px solid #cbd5e1;" placeholder="Fatura Notları / Açıklamalar"></textarea>
+        </div>
+        <div class="totals">
+            <div class="total-item">
+                <label>Ara Toplam (KDV Hariç)</label>
+                <span>13.650,00 TL</span>
+            </div>
+            <div class="total-item">
+                <label>Toplam İskonto</label>
+                <span>-600,00 TL</span>
+            </div>
+            <div class="total-item">
+                <label>Toplam KDV (%20)</label>
+                <span>2.610,00 TL</span>
+            </div>
+            <div class="total-item grand-total" id="grand-total-item">
+                <label>GENEL TOPLAM</label>
+                <span>15.660,00 TL</span>
+            </div>
+        </div>
+    </div>
+  </div>
+  <script>
+    function updateScreenStyle(type) {
+        const titleElement = document.getElementById('entry-title');
+        const selectElement = document.getElementById('transaction-type');
+        const tableHeader = document.getElementById('table-header-row');
+        const grandTotal = document.getElementById('grand-total-item');
+        const isAlis = type.includes('alis');
+        // Başlık ve Stil Güncelleme
+        titleElement.textContent = selectElement.options[selectElement.selectedIndex].text.toUpperCase() + ' GİRİŞ EKRANI';
+        if (isAlis) {
+            // ALIM/GİRİŞ (Mavi Ton)
+            titleElement.style.color = '#2563eb';
+            selectElement.classList.add('alis-style');
+            tableHeader.style.backgroundColor = '#2563eb';
+            grandTotal.classList.remove('grand-total');
+            grandTotal.classList.add('alis-total');
+        } else {
+            // SATIŞ/ÇIKIŞ (Yeşil Ton)
+            titleElement.style.color = '#059669';
+            selectElement.classList.remove('alis-style');
+            tableHeader.style.backgroundColor = '#059669';
+            grandTotal.classList.remove('alis-total');
+            grandTotal.classList.add('grand-total');
+        }
+    }
+    // Kısayollar
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("F2: Yeni Fatura/İrsaliye kaydı başlatılıyor."); }
+      if (event.key === "F4") { event.preventDefault(); alert("F4: Cari veya Stok Kartı Arama Ekranı açılıyor."); }
+      if (event.key === "F5") { event.preventDefault(); alert("F5: Fatura/İrsaliye kaydı veritabanına işleniyor (Kaydet)."); }
+      if (event.key === "F6") { event.preventDefault(); alert("F6: Belge Yazdırma Önizlemesine gönderiliyor."); window.print(); }
+      if (event.key === "F10") { event.preventDefault(); alert("F10: Ekran kapatılıyor."); }
+    });
+    // İşlem Türü değişikliğini dinle
+    document.getElementById('transaction-type').addEventListener('change', function() {
+        updateScreenStyle(this.value);
+    });
+    // Sayfa yüklendiğinde varsayılan stili uygula
+    updateScreenStyle(document.getElementById('transaction-type').value);
+  </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safire Stok Programı - Satış Faturası</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #fef2f2;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    .top-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      position: relative;
+      transition: all 0.3s;
+    }
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    .btn-f2 { background: #2563eb; color: white; }
+    .btn-f3 { background: #8b5cf6; color: white; }
+    .btn-f4 { background: #059669; color: white; }
+    .btn-f5 { background: #dc2626; color: white; }
+    .btn-f6 { background: #f59e0b; color: white; }
+    .btn-f7 { background: #10b981; color: white; }
+    .btn-f9 { background: #be123c; color: white; }
+    .btn-f10 { background: #8b5cf6; color: white; }
+    .btn::after {
+      content: attr(data-key);
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #1e293b;
+      color: white;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #dc2626;
+    }
+    .invoice-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #dc2626;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .right-corner-labels {
+      text-align: right;
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 1.8;
+    }
+    .right-corner-labels div {
+      font-weight: 600;
+    }
+    .customer-info {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border-left: 4px solid #dc2626;
+    }
+    .customer-info strong {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .table th,
+    .table td {
+      border: 1px solid #cbd5e1;
+      padding: 12px 8px;
+      font-size: 13px;
+      text-align: left;
+    }
+    .table th {
+      background: #f1f5f9;
+      font-weight: bold;
+      color: #1e293b;
+    }
+    .table tr:nth-child(even) {
+      background: #f8fafc;
+    }
+    .summary {
+      margin-top: 20px;
+      text-align: right;
+      font-size: 14px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+    }
+    .summary div {
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      max-width: 300px;
+      margin-left: auto;
+    }
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    .record-copy {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 10px;
+      color: #6b7280;
+      font-style: italic;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 8px;
+    }
+    .back-button {
+      padding: 8px 16px;
+      background: #6b7280;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .fatura-bilgileri {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .fatura-bilgi-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .fatura-bilgi-group label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #374151;
+    }
+    .fatura-bilgi-group input {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="ana_ekran.html" class="back-button">← Ana Ekrana Dön</a>
+    <div class="top-buttons">
+      <button class="btn btn-f2" data-key="F2" onclick="yeniFatura()">F2: Yeni</button>
+      <button class="btn btn-f3" data-key="F3" onclick="yazdir()">F3: Yazdır</button>
+      <button class="btn btn-f4" data-key="F4" onclick="cariSec()">F4: Cari Seç</button>
+      <button class="btn btn-f5" data-key="F5" onclick="sil()">F5: Sil</button>
+      <button class="btn btn-f6" data-key="F6" onclick="barkodOku()">F6: Barkod</button>
+      <button class="btn btn-f7" data-key="F7" onclick="excelVeriAl()">F7: Excel'den Veri Al</button>
+      <button class="btn btn-f9" data-key="F9" onclick="tahsilatEkle()">F9: Tahsilat</button>
+      <button class="btn btn-f10" data-key="F10" onclick="raporla()">F10: Raporla</button>
+    </div>
+    <div class="header">
+      <div class="invoice-title">🧾 SATIŞ FATURASI</div>
+      <div class="right-corner-labels">
+        <div>Fatura Tarihi: <input type="text" value="10.11.2025" style="border:none; background:none; width:100px;"></div>
+        <div>Fatura No: <input type="text" value="FTR-SAT-2025-001" style="border:none; background:none; width:120px;"></div>
+        <div>Sevk Tarihi: <input type="text" value="10.11.2025" style="border:none; background:none; width:100px;"></div>
+      </div>
+    </div>
+    <div class="fatura-bilgileri">
+      <div class="fatura-bilgi-group">
+        <label>Cari Kodu</label>
+        <input type="text" value="CR-2025-0015">
+      </div>
+      <div class="fatura-bilgi-group">
+        <label>İrsaliye No</label>
+        <input type="text" value="IRS-SAT-2025-001">
+      </div>
+    </div>
+    <div class="customer-info">
+      <strong>ALICI: ANADOLU OTOMOTİV</strong><br>
+      Adres: E-5 Yan Yol, No:12<br>
+      Bağcılar / İSTANBUL<br>
+      Vergi Dairesi: Bayrampaşa │ Vergi No: 9876543210<br>
+      Tel: 0212 123 45 67
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width:14%;">Özel Kod</th>
+          <th style="width:14%;">Stok No</th>
+          <th style="width:30%;">Parça Adı</th>
+          <th style="width:8%;">Adet</th>
+          <th style="width:8%;">Birim</th>
+          <th style="width:11%;">Birim Fiyat</th>
+          <th style="width:10%;">İskonto (%)</th>
+          <th style="width:15%;">Tutar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sly12435</td>
+          <td>FB-2025-A</td>
+          <td>Fren Balatası Seti</td>
+          <td>2</td>
+          <td>Adet</td>
+          <td>1.200,00</td>
+          <td>5</td>
+          <td>2.280,00</td>
+        </tr>
+        <tr>
+          <td>rot789</td>
+          <td>RB-2025-B</td>
+          <td>Rot Başlığı</td>
+          <td>1</td>
+          <td>Adet</td>
+          <td>900,00</td>
+          <td>–</td>
+          <td>900,00</td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right; font-weight: bold;">Ara Toplam:</td>
+          <td>3.180,00</td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right; font-weight: bold;">KDV (%20):</td>
+          <td>636,00</td>
+        </tr>
+        <tr>
+          <td colspan="7" style="text-align: right; font-weight: bold; font-size: 16px;">GENEL TOPLAM:</td>
+          <td style="font-weight: bold; font-size: 16px;">3.816,00</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer">
+      Safire Bilgisayar • Safire Stok Programı – İyi Çalışmalar! 💙
+    </div>
+    <div class="record-copy">
+      Kayıt Adı: FAT-SAT-2025-000123 | Oluşturulma: 10.11.2025 18:45 | <span id="currentUserFatura">Ahmet</span> (PC)
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentUser = localStorage.getItem('currentUser') || 'Ahmet';
+      document.getElementById('currentUserFatura').textContent = currentUser;
+    });
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); yeniFatura(); }
+      if (event.key === "F3") { event.preventDefault(); yazdir(); }
+      if (event.key === "F4") { event.preventDefault(); cariSec(); }
+      if (event.key === "F5") { event.preventDefault(); sil(); }
+      if (event.key === "F6") { event.preventDefault(); barkodOku(); }
+      if (event.key === "F7") { event.preventDefault(); excelVeriAl(); }
+      if (event.key === "F9") { event.preventDefault(); tahsilatEkle(); }
+      if (event.key === "F10") { event.preventDefault(); raporla(); }
+    });
+    function yeniFatura() {
+      if (confirm('Yeni fatura oluşturulsun mu?')) {
+        alert('Yeni fatura oluşturuldu. Bilgileri girebilirsiniz.');
+      }
+    }
+    function yazdir() {
+      window.print();
+    }
+    function cariSec() {
+      const cariKodu = prompt('Cari kodunu girin:');
+      if (cariKodu) {
+        alert(`Cari seçildi: ${cariKodu}
+Cari bilgileri yükleniyor...`);
+      }
+    }
+    function sil() {
+      if (confirm('Bu faturayı silmek istediğinizden emin misiniz?')) {
+        alert('Fatura silindi.');
+        window.location.href = 'ana_ekran.html';
+      }
+    }
+    function barkodOku() {
+      const barkod = prompt('Barkod numarasını girin veya okutun:');
+      if (barkod) {
+        alert(`Barkod okundu: ${barkod}
+Ürün bilgileri getiriliyor...`);
+      }
+    }
+    function excelVeriAl() {
+      alert('Excel\'den fatura veri alma işlemi başlatılıyor...');
+    }
+    function tahsilatEkle() {
+      alert('Tahsilat ekleme sayfasına yönlendiriliyor...');
+      window.location.href = 'tahsilat.html';
+    }
+    function raporla() {
+      alert('Fatura raporlama sayfasına yönlendiriliyor...');
+      window.location.href = 'rapor_fatura.html';
+    }
+  </script>
+</body>
+</html>

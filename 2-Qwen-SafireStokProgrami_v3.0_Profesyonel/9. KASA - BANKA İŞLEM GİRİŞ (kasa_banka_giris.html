@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Kasa / Banka İşlem Giriş Ekranı</title>
+  <style>
+    /* ORTAK STİLLER */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f0f7ff; padding: 16px; }
+    .container {
+      width: 21cm; 
+      min-height: 29.7cm; 
+      background: white;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 95vh;
+    }
+    /* TUŞLAR */
+    .top-buttons { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn { padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; position: relative; transition: background 0.2s; }
+    .btn-f2 { background: #2563eb; color: white; } /* Yeni */
+    .btn-f5 { background: #059669; color: white; } /* Kaydet */
+    .btn-f10 { background: #be123c; color: white; } /* Kapat */
+    .btn::after { content: attr(data-key); position: absolute; top: -6px; right: -6px; background: #1e3a8b; color: white; font-size: 8px; padding: 1px 3px; border-radius: 3px; }
+    /* BAŞLIK VE TİP SEÇİMİ */
+    .header-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .title { font-size: 20px; font-weight: 800; color: #f59e0b; } /* Finans için Turuncu ton */
+    .type-select { display: flex; gap: 10px; align-items: center; }
+    .type-select select { padding: 8px; border-radius: 4px; border: 2px solid #f59e0b; font-size: 14px; font-weight: 700; color: #f59e0b; background: #fffdf7; }
+    /* İŞLEM BİLGİLERİ GRİDİ */
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    /* SOL ALAN: HESAP BİLGİLERİ */
+    .account-info, .transaction-info { padding: 15px; border: 1px solid #fed7aa; border-radius: 8px; background: #fff7ed; margin-bottom: 20px; }
+    .account-info h3, .transaction-info h3 { font-size: 16px; color: #c2410c; margin-bottom: 15px; border-bottom: 1px solid #fdba74; padding-bottom: 5px; }
+    .form-group-triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .form-group-single { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #fbbf24; border-radius: 4px; font-size: 13px; font-weight: 500; }
+    /* CARİ SEÇİM */
+    .cari-input-group { position: relative; }
+    .cari-input-group input { padding-right: 30px; }
+    .cari-input-group .btn-cari-search { position: absolute; right: 1px; top: 1px; bottom: 1px; padding: 0 8px; background: #3b82f6; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; }
+    /* SAĞ ALAN: TUTAR VE ÖZET */
+    .amount-section { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center; 
+        height: 100%;
+        padding: 20px;
+        border: 2px solid #ef4444; /* Ödeme (Kırmızı) */
+        border-radius: 10px;
+        background: #fef2f2;
+    }
+    .amount-section h3 { color: #b91c1c; margin-bottom: 15px; font-size: 18px; }
+    .amount-section input {
+        font-size: 36px;
+        font-weight: 900;
+        text-align: center;
+        color: #b91c1c;
+        border: 3px solid #f87171;
+        border-radius: 8px;
+        padding: 15px 10px;
+        width: 80%;
+        background: white;
+    }
+    /* Tahsilat Durumunda Renk Değişimi (Giriş: Yeşil) */
+    .tahsilat-color { 
+        border-color: #10b981 !important; 
+        color: #047857 !important; 
+        background: #ecfdf5 !important;
+    }
+    .tahsilat-color h3 { color: #047857 !important; }
+    .tahsilat-color input { border-color: #34d399 !important; color: #047857 !important; }
+    /* Virman Durumunda Renk Değişimi (Mavi) */
+    .virman-color { 
+        border-color: #3b82f6 !important; 
+        color: #2563eb !important; 
+        background: #eff6ff !important;
+    }
+    .virman-color h3 { color: #2563eb !important; }
+    .virman-color input { border-color: #93c5fd !important; color: #2563eb !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-buttons">
+        <button class="btn btn-f2" data-key="F2">F2: Yeni Fiş</button>
+        <button class="btn btn-f5" data-key="F5">F5: Kaydet</button>
+        <button class="btn btn-f10" data-key="F10">F10: Kapat</button>
+    </div>
+    <div class="header-info">
+        <div class="title" id="entry-title">KASA / BANKA İŞLEM GİRİŞ EKRANI - ÖDEME (ÇIKIŞ)</div>
+        <div class="type-select">
+            <select id="operation-type">
+                <option value="ödeme" selected>ÖDEME (Çıkış)</option>
+                <option value="tahsilat">TAHSİLAT (Giriş)</option>
+                <option value="virman">KASA/BANKA VİRMAN</option>
+            </select>
+        </div>
+    </div>
+    <div class="main-grid">
+        <div class="left-side">
+            <div class="account-info">
+                <h3>1. Hesap ve Tarih Bilgileri</h3>
+                <div class="form-group-triple">
+                    <div class="form-group">
+                        <label>Hareket Tipi</label>
+                        <select id="movement-type">
+                            <option value="kasa">Kasa</option>
+                            <option value="banka">Banka</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Hesap Kodu</label>
+                        <select id="account-code">
+                            <option>Merkez Kasa (TL)</option>
+                            <option>İş Bankası (TL)</option>
+                            <option>Garanti Bankası (USD)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>İşlem Tarihi</label>
+                        <input type="date" value="2025-11-20">
+                    </div>
+                </div>
+                <div class="form-group-single">
+                    <label>Açıklama</label>
+                    <input type="text" placeholder="Örn: X firmasına toptan ödeme (Fatura No: 12345)">
+                </div>
+            </div>
+            <div class="transaction-info" id="cari-area">
+                <h3>2. Cari ve Detay Bilgileri</h3>
+                <div class="form-group-single">
+                    <label>Cari Kodu (F4 - Zorunlu)</label>
+                    <div class="cari-input-group">
+                        <input type="text" value="TD-0055" placeholder="CR Kodu">
+                        <button class="btn-cari-search">F4</button>
+                    </div>
+                </div>
+                <div class="form-group-single">
+                    <label>Cari Adı</label>
+                    <input type="text" value="Güven Oto Yedek Parça Ltd. Şti." readonly>
+                </div>
+                <div class="form-group-single">
+                    <label>Belge/Makbuz No</label>
+                    <input type="text" placeholder="Varsa Makbuz veya Belge Numarası">
+                </div>
+            </div>
+            <div class="transaction-info" id="virman-area" style="display: none;">
+                <h3>2. Virman (Transfer) Bilgileri</h3>
+                <div class="form-group-triple">
+                    <div class="form-group">
+                        <label>Hedef Hareket Tipi</label>
+                        <select>
+                            <option>Kasa</option>
+                            <option>Banka</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Hedef Hesap Kodu</label>
+                        <select>
+                            <option>İş Bankası (TL)</option>
+                            <option>Merkez Kasa (TL)</option>
+                            <option>Garanti Bankası (USD)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-side">
+            <div class="amount-section" id="amount-area">
+                <h3>ÖDENECEK TUTAR (TL)</h3>
+                <input type="text" value="2.500,00">
+                <p style="margin-top: 15px; font-size: 13px; font-weight: 600; color: #b91c1c;" id="cari-bakiye">Cari Bakiyesi: -41.500,00 TL (Borçlu)</p>
+            </div>
+        </div>
+    </div>
+    <div class="footer" style="margin-top: auto;">
+      Safire Bilgisayar • Safire Stok Programı v3.0 – Kasa / Banka İşlem Girişi 💙
+    </div>
+  </div>
+  <script>
+    function updateOperation(type) {
+        const amountArea = document.getElementById('amount-area');
+        const titleElement = document.getElementById('entry-title');
+        const cariArea = document.getElementById('cari-area');
+        const virmanArea = document.getElementById('virman-area');
+        const cariBakiye = document.getElementById('cari-bakiye');
+        amountArea.classList.remove('tahsilat-color', 'virman-color');
+        if (type === 'tahsilat') {
+            // Tahsilat (Giriş: Yeşil)
+            amountArea.classList.add('tahsilat-color');
+            titleElement.style.color = '#059669';
+            titleElement.textContent = 'KASA / BANKA İŞLEM GİRİŞ EKRANI - TAHSİLAT (GİRİŞ)';
+            cariBakiye.textContent = 'Cari Bakiyesi: +5.200,00 TL (Alacaklı)';
+            cariArea.style.display = 'block';
+            virmanArea.style.display = 'none';
+        } else if (type === 'ödeme') {
+            // Ödeme (Çıkış: Turuncu/Kırmızı)
+            titleElement.style.color = '#f59e0b';
+            titleElement.textContent = 'KASA / BANKA İŞLEM GİRİŞ EKRANI - ÖDEME (ÇIKIŞ)';
+            cariBakiye.textContent = 'Cari Bakiyesi: -41.500,00 TL (Borçlu)';
+            cariArea.style.display = 'block';
+            virmanArea.style.display = 'none';
+        } else if (type === 'virman') {
+            // Virman (Mavi)
+            amountArea.classList.add('virman-color');
+            titleElement.style.color = '#2563eb';
+            titleElement.textContent = 'KASA / BANKA İŞLEM GİRİŞ EKRANI - VİRMAN (TRANSFER)';
+            cariBakiye.textContent = 'İşlem Tipi: Kasa/Banka arası transfer.';
+            cariArea.style.display = 'none';
+            virmanArea.style.display = 'block';
+        }
+    }
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("F2: Yeni Kasa/Banka fişi başlatılıyor."); }
+      if (event.key === "F4") { event.preventDefault(); alert("F4: Cari Kartı Arama Ekranı açılıyor."); }
+      if (event.key === "F5") { event.preventDefault(); alert("F5: İşlem kaydediliyor ve Kasa/Banka/Cari bakiyeleri güncelleniyor (Kaydet)."); }
+      if (event.key === "F10") { event.preventDefault(); alert("F10: Ekran kapatılıyor."); }
+    });
+    document.getElementById('operation-type').addEventListener('change', function() {
+        updateOperation(this.value);
+    });
+    // Sayfa yüklendiğinde varsayılan stili uygula
+    updateOperation(document.getElementById('operation-type').value);
+  </script>
+</body>
+</html>

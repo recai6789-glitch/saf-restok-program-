@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Safire Stok Programı - Cari Kart</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: #f0f7ff;
+      padding: 16px;
+    }
+    .container {
+      width: 20.5cm;
+      min-height: 29.7cm;
+      background: white;
+      margin: 0 auto;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    /* TUŞLAR – SADECE EKRANDA */
+    .no-print,
+    .no-print * {
+      display: none !important;
+    }
+    @media print {
+      .no-print,
+      .no-print * {
+        display: none !important;
+      }
+      .container {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+      }
+      @page {
+        size: A4;
+        margin: 1cm;
+      }
+    }
+    /* ÜSTTE F TUŞLARI */
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .f-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+      position: relative;
+    }
+    .btn-f2 { background: #2563eb; color: white; }
+    .btn-f3 { background: #8b5cf6; color: white; }
+    .btn-f4 { background: #059669; color: white; }
+    .btn-f5 { background: #dc2626; color: white; }
+    .btn-f6 { background: #f59e0b; color: white; }
+    .btn-f9 { background: #be123c; color: white; }
+    .btn-f10 { background: #8b5cf6; color: white; }
+    .btn-excel { background: #10b981; color: white; }
+    .btn::after {
+      content: attr(data-key);
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #1e293b;
+      color: white;
+      font-size: 9px;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .btn::before {
+      content: attr(data-aciklama);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .btn:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+    /* ARAMA KUTUSU – 2 SATIR AŞAĞIDA */
+    .search-group {
+      display: flex;
+      gap: 6px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
+    .search-input {
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 300px;
+      background: white;
+    }
+    .btn-search {
+      padding: 8px 14px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    /* BAŞLIK */
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #059669;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .title::before {
+      content: "👤";
+      font-size: 30px;
+    }
+    /* CARİ FORMU */
+    .cari-form {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      height: 90px;
+      justify-content: center;
+    }
+    .form-group label {
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 3px solid rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-group input,
+    .form-group select {
+      padding: 7px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #fafcff;
+    }
+    /* Renkli Etiketler */
+    .label-kod       { background: linear-gradient(to bottom, #2563eb, #1d4ed8); } /* Cari Kodu */
+    .label-unvan     { background: linear-gradient(to bottom, #059669, #047857); } /* Unvan */
+    .label-vdaire    { background: linear-gradient(to bottom, #dc2626, #b91c1c); } /* Vergi Dairesi */
+    .label-vno       { background: linear-gradient(to bottom, #ca8a04, #a16207); } /* Vergi No */
+    .label-adres     { background: linear-gradient(to bottom, #374151, #1e293b); } /* Adres */
+    .label-il        { background: linear-gradient(to bottom, #1f2937, #111827); } /* İl / İlçe */
+    .label-tel1      { background: linear-gradient(to bottom, #0369a1, #0284c7); } /* Telefon 1 */
+    .label-tel2      { background: linear-gradient(to bottom, #0891b2, #0e7490); } /* Telefon 2 */
+    .label-eposta    { background: linear-gradient(to bottom, #057a55, #046f4d); } /* E-posta */
+    .label-yetkili   { background: linear-gradient(to bottom, #7c2d12, #9a3412); } /* Yetkili */
+    .label-tur       { background: linear-gradient(to bottom, #4338ca, #3730a3); } /* Cari Türü */
+    .label-bakiye    { background: linear-gradient(to bottom, #be123c, #9f1239); } /* Bakiye */
+    /* Alt Bilgi */
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+    .record-copy {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 10px;
+      color: #6b7280;
+      font-style: italic;
+      border-top: 1px dashed #cbd5e1;
+      padding-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- F TUŞLARI – KÜÇÜKTEN BÜYÜĞE -->
+    <div class="top-section">
+      <div class="f-buttons">
+        <button class="btn btn-f2" data-key="F2" data-aciklama="Yeni cari kartı oluşturur">F2: Yeni</button>
+        <button class="btn btn-f3" data-key="F3" data-aciklama="Cari kartını yazdırır">F3: Yazdır</button>
+        <button class="btn btn-f4" data-key="F4" data-aciklama="Seçili cari kartını düzenler">F4: Düzenle</button>
+        <button class="btn btn-f5" data-key="F5" data-aciklama="Onaysız cari kartını siler">F5: Sil</button>
+        <button class="btn btn-f6" data-key="F6" data-aciklama="Cari seçimi yapar">F6: Cari Seç</button>
+        <button class="btn btn-f9" data-key="F9" data-aciklama="Tahsilat/ödeme ekler">F9: Tahsilat</button>
+        <button class="btn btn-f10" data-key="F10" data-aciklama="Raporlamaya geçer">F10: Raporla</button>
+        <button class="btn btn-excel" data-key="Excel" data-aciklama="Excel'den veri alır">Excel'den Veri Al</button>
+      </div>
+    </div>
+    <!-- ARAMA KUTUSU – 2 SATIR AŞAĞIDA -->
+    <div class="search-group">
+      <input type="text" class="search-input" placeholder="🔍 Cari Ara: Kod / Unvan">
+      <button class="btn-search">Ara</button>
+    </div>
+    <!-- Başlık -->
+    <div class="header">
+      <div class="title">Cari Kart Detayı</div>
+    </div>
+    <!-- Cari Bilgileri -->
+    <div class="cari-form">
+      <div class="form-group">
+        <label class="label-kod">Cari Kodu</label>
+        <input type="text" value="CR-2025-0015" readonly>
+      </div>
+      <div class="form-group">
+        <label class="label-unvan">Unvan</label>
+        <input type="text" value="Anadolu Otomotiv">
+      </div>
+      <div class="form-group">
+        <label class="label-vdaire">Vergi Dairesi</label>
+        <input type="text" value="Bayrampaşa">
+      </div>
+      <div class="form-group">
+        <label class="label-vno">Vergi No / TC</label>
+        <input type="text" value="9876543210">
+      </div>
+      <div class="form-group">
+        <label class="label-adres">Adres</label>
+        <input type="text" value="E-5 Yan Yol, No:12">
+      </div>
+      <div class="form-group">
+        <label class="label-il">İl / İlçe</label>
+        <input type="text" value="İstanbul / Bağcılar">
+      </div>
+      <div class="form-group">
+        <label class="label-tel1">Telefon 1</label>
+        <input type="text" value="0212 123 45 67">
+      </div>
+      <div class="form-group">
+        <label class="label-tel2">Telefon 2</label>
+        <input type="text" value="0532 987 65 43">
+      </div>
+      <div class="form-group">
+        <label class="label-eposta">E-posta</label>
+        <input type="text" value="info@anadoluoto.com">
+      </div>
+      <div class="form-group">
+        <label class="label-yetkili">Yetkili Kişi</label>
+        <input type="text" value="Mehmet Yılmaz">
+      </div>
+      <div class="form-group">
+        <label class="label-tur">Cari Türü</label>
+        <select>
+          <option>Alıcı</option>
+          <option>Satıcı</option>
+          <option>Alıcı ve Satıcı</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="label-bakiye">Bakiye (TL)</label>
+        <input type="text" value="41.500,00" readonly>
+      </div>
+    </div>
+    <!-- Hareket Tablosu ve Toplam SİLİNDİ -->
+    <!-- Alt Bilgi -->
+    <div class="footer">
+      Safire Bilgisayar • Safire Stok Programı v3.0 – İyi Çalışmalar! 💙
+    </div>
+    <!-- Kayıt Adı -->
+    <div class="record-copy">
+      Kayıt Adı: CR-2025-000123 | Oluşturulma: 10.11.2025 | Ahmet (PC)
+    </div>
+  </div>
+  <script>
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "F2") { event.preventDefault(); alert("Yeni cari kartı"); }
+      if (event.key === "F3") { event.preventDefault(); window.print(); }
+      if (event.key === "F4") { event.preventDefault(); alert("Düzenleniyor"); }
+      if (event.key === "F5") { event.preventDefault(); confirm("Silinsin mi?"); }
+      if (event.key === "F6") { event.preventDefault(); alert("Cari seçildi"); }
+      if (event.key === "F9") { event.preventDefault(); alert("Tahsilat eklendi"); }
+      if (event.key === "F10") { event.preventDefault(); window.location.href = 'rapor_cari_hareket.html'; }
+    });
+  </script>
+</body>
+</html>
